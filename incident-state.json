@@ -1,0 +1,66 @@
+{
+  "schema": "incident-state/v1",
+  "incident": "Intel Connectivity Performance Suite zeroes IPv6 Flow Label mid-connection",
+  "updated": "2026-10-02",
+  "status": "root_cause_confirmed_workaround_available_no_vendor_fix",
+  "component": {
+    "product": "Intel Connectivity Performance Suite",
+    "version": "40.25.926.0",
+    "driver": "IntcCo11X64.sys",
+    "driver_version": "11.5.11.19",
+    "driver_service": "INTCCoSvc",
+    "wfp_provider": "Rivet Networks, LLC - RFE version 6.1.0.1",
+    "callouts": [
+      {"name": "IpV6 Egress Transport Callout", "layer": "FWPM_LAYER_OUTBOUND_TRANSPORT_V6", "flags": ["FWP_CALLOUT_FLAG_CONDITIONAL_ON_FLOW"]},
+      {"name": "IpV6 Ingress Network Outbound Callout", "layer": "FWPM_LAYER_OUTBOUND_IPPACKET_V6"}
+    ],
+    "related_services": ["IDBWM", "Intel Connectivity Network Service", "IntelConnectService"]
+  },
+  "environment": {
+    "device": "Samsung Galaxy Book 960QHA",
+    "cpu": "Intel Core Ultra 7 256V",
+    "wifi": "Intel Wi-Fi 7 BE201 (driver 23.160.0.4)",
+    "os": "Windows 11 Pro 26H2 build 26300.9457",
+    "onenote": "16.0.20430.20092",
+    "network": "native IPv6",
+    "affected_endpoint": "Azure Front Door anycast 2620:1ec:50::11 (ln-0001.ln-msedge.net)"
+  },
+  "evidence": {
+    "wire_flow_label_kept": {"SYN": "24/24", "FIN": "11/11", "ACK_data": "0/42"},
+    "rst_hop_limit": 49,
+    "synack_hop_limit": 47,
+    "ab_test": [
+      {"condition": "baseline", "ipv6_connections_ok": "4/10", "ack_data_label_kept": "0/42"},
+      {"condition": "IDBWM stopped", "ipv6_connections_ok": "1/10", "ack_data_label_kept": "0/18"},
+      {"condition": "INTCCoSvc and ICPS services stopped", "ipv6_connections_ok": "10/10", "ack_data_label_kept": "65/65"},
+      {"condition": "final, ICPS disabled", "ipv6_connections_ok": "10/10", "ack_data_label_kept": "73/73"}
+    ],
+    "ruled_out": ["AdGuard WFP driver", "AdGuard VPN WFP driver", "NetLimiter 5 driver"],
+    "ipv4_affected": false
+  },
+  "impact": {
+    "onenote_sync_broken_since": "2026-09-12T20:59:00Z",
+    "onenote_restored": "2026-10-02",
+    "symptoms": ["OneNote: We can't get to your notebooks right now", "OneNote: empty notebooks shown as Up to date", "ERR_CONNECTION_RESET on Microsoft 365 sign-in and other sites"]
+  },
+  "reports": {
+    "intel": [
+      {"channel": "Intel Community", "url": "https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647", "public": true, "date": "2026-10-02"},
+      {"channel": "Intel Customer Support case", "public": false, "date": "2026-10-02", "state": "acknowledged"}
+    ],
+    "microsoft": [
+      {"channel": "Feedback Hub (OneNote)", "url": "https://aka.ms/AA13q37q", "public": true, "date": "2026-10-02"},
+      {"channel": "Feedback Hub (Windows networking)", "url": "https://aka.ms/AA13q37r", "public": true, "date": "2026-10-02"},
+      {"channel": "Feedback Portal idea", "url": "https://feedbackportal.microsoft.com/feedback/idea/dd326ebc-9da1-f111-85ce-7c1e529382f4", "public": true, "date": "2026-08-27", "root_cause_added": "2026-10-02"},
+      {"channel": "Microsoft Q&A", "url": "https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo", "public": true, "date": "2026-10-02"},
+      {"channel": "Microsoft Support case", "public": false, "opened": "2026-08-27", "root_cause_sent": "2026-10-02"}
+    ],
+    "samsung": [
+      {"channel": "Samsung Community US", "public": true, "state": "posted_then_hidden_as_spam"}
+    ],
+    "other": []
+  },
+  "vendor_fix": null,
+  "workaround": "Disable INTCCoSvc, IDBWM, Intel Connectivity Network Service and IntelConnectService",
+  "diagnosed_by": "Anthropic Claude (agent on the affected machine), after OpenAI Codex abandoned the investigation"
+}

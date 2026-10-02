@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Am I affected? Check and fix · Intel ICPS IPv6 flow-label incident</title>
+  <meta name="description" content="How to tell whether Intel Connectivity Performance Suite is resetting your IPv6 connections, how to disable it, and how to undo it.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/workaround.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Intel ICPS IPv6 flow-label incident">
+  <meta property="og:title" content="Am I affected? Check and fix">
+  <meta property="og:description" content="How to tell whether Intel Connectivity Performance Suite is resetting your IPv6 connections, how to disable it, and how to undo it.">
+  <meta property="og:url" content="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/workaround.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Overview</a>
+  <a href="workaround.html">Am I affected?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="owner-action.html">Vendor asks</a>
+  <a href="vendor-reports.html">Report status</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
+</nav>
+<div class="markdown-heading"><h1 class="heading-element">Am I affected? Check and fix</h1><a id="user-content-am-i-affected-check-and-fix" class="anchor" aria-label="Permalink: Am I affected? Check and fix" href="#am-i-affected-check-and-fix"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>This applies to Windows PCs with <strong>Intel Connectivity Performance Suite</strong> installed. It usually ships preinstalled on Intel laptops, and it is most visible on <strong>native IPv6</strong> connections.</p>
+<div class="markdown-heading"><h2 class="heading-element">Typical symptoms</h2><a id="user-content-typical-symptoms" class="anchor" aria-label="Permalink: Typical symptoms" href="#typical-symptoms"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>OneNote desktop: "We can't get to your notebooks right now", or notebooks open empty while showing "Up to date".</li>
+<li>OneDrive or Microsoft 365 sign-in failing intermittently. <code>ERR_CONNECTION_RESET</code> in the browser.</li>
+<li>"Connection reset" on assorted other websites.</li>
+<li>Everything works on the phone or in OneNote on the web.</li>
+</ul>
+<div class="markdown-heading"><h2 class="heading-element">1. Check whether the Intel driver is present</h2><a id="user-content-1-check-whether-the-intel-driver-is-present" class="anchor" aria-label="Permalink: 1. Check whether the Intel driver is present" href="#1-check-whether-the-intel-driver-is-present"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Open <strong>PowerShell</strong> and run:</p>
+<div class="highlight highlight-source-powershell"><pre><span class="pl-c1">Get-CimInstance</span> Win32_SystemDriver <span class="pl-k">-</span>Filter <span class="pl-s"><span class="pl-pds">"</span>Name='INTCCoSvc'<span class="pl-pds">"</span></span> <span class="pl-k">|</span> <span class="pl-c1">Select-Object</span> Name<span class="pl-k">,</span> StartMode<span class="pl-k">,</span> State
+<span class="pl-c1">Get-Service</span> IDBWM<span class="pl-k">,</span> <span class="pl-s"><span class="pl-pds">'</span>Intel Connectivity Network Service<span class="pl-pds">'</span></span><span class="pl-k">,</span> IntelConnectService <span class="pl-k">-</span>ErrorAction SilentlyContinue</pre></div>
+<p>If <code>INTCCoSvc</code> shows <code>State: Running</code>, the traffic-control driver is active.</p>
+<div class="markdown-heading"><h2 class="heading-element">2. Test IPv6 connections to Microsoft's edge</h2><a id="user-content-2-test-ipv6-connections-to-microsofts-edge" class="anchor" aria-label="Permalink: 2. Test IPv6 connections to Microsoft's edge" href="#2-test-ipv6-connections-to-microsofts-edge"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<div class="highlight highlight-source-powershell"><pre><span class="pl-c1">1</span><span class="pl-k">..</span><span class="pl-c1">10</span> <span class="pl-k">|</span> <span class="pl-c1">ForEach-Object</span> { <span class="pl-c1">curl.exe</span> <span class="pl-c1">-6</span> <span class="pl-k">-</span>sS <span class="pl-k">-</span>o NUL <span class="pl-k">-</span>w <span class="pl-s"><span class="pl-pds">"</span>%{http_code}<span class="pl-cce">`n</span><span class="pl-pds">"</span></span> https:<span class="pl-k">//</span><span class="pl-c1">api.onedrive.com</span><span class="pl-k">/</span> }</pre></div>
+<p>A healthy machine prints ten HTTP status codes, such as <code>302</code>. An affected machine prints errors like <code>Recv failure: Connection was reset</code> for some or all of the attempts. If <code>curl -6</code> can't connect at all, you have no IPv6, and this particular bug can't hit you.</p>
+<div class="markdown-heading"><h2 class="heading-element">3. Apply the workaround</h2><a id="user-content-3-apply-the-workaround" class="anchor" aria-label="Permalink: 3. Apply the workaround" href="#3-apply-the-workaround"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Open <strong>PowerShell as administrator</strong> and run:</p>
+<div class="highlight highlight-source-powershell"><pre><span class="pl-c1">sc.exe</span> config INTCCoSvc start<span class="pl-k">=</span> disabled
+<span class="pl-c1">sc.exe</span> stop INTCCoSvc
+<span class="pl-k">foreach</span> (<span class="pl-smi">$s</span> <span class="pl-k">in</span> <span class="pl-s"><span class="pl-pds">'</span>IDBWM<span class="pl-pds">'</span></span><span class="pl-k">,</span> <span class="pl-s"><span class="pl-pds">'</span>Intel Connectivity Network Service<span class="pl-pds">'</span></span><span class="pl-k">,</span> <span class="pl-s"><span class="pl-pds">'</span>IntelConnectService<span class="pl-pds">'</span></span>) {
+  <span class="pl-c1">Set-Service</span> <span class="pl-k">-</span>Name <span class="pl-smi">$s</span> <span class="pl-k">-</span>StartupType Disabled <span class="pl-k">-</span>ErrorAction SilentlyContinue
+  <span class="pl-c1">Stop-Service</span> <span class="pl-k">-</span>Name <span class="pl-smi">$s</span> <span class="pl-k">-</span>Force <span class="pl-k">-</span>ErrorAction SilentlyContinue
+}</pre></div>
+<p>Restart the PC, then run step 2 again. All ten attempts should succeed. OneNote should sync within a minute. If a notebook still shows an error, close it and reopen it from OneDrive.</p>
+<p><strong>To undo it</strong>, restore the start types they had on the affected machine, then restart:</p>
+<div class="highlight highlight-source-powershell"><pre><span class="pl-c1">sc.exe</span> config INTCCoSvc start<span class="pl-k">=</span> demand
+<span class="pl-c1">Set-Service</span> IDBWM <span class="pl-k">-</span>StartupType Manual
+<span class="pl-c1">Set-Service</span> <span class="pl-s"><span class="pl-pds">'</span>Intel Connectivity Network Service<span class="pl-pds">'</span></span> <span class="pl-k">-</span>StartupType Automatic
+<span class="pl-c1">Set-Service</span> IntelConnectService <span class="pl-k">-</span>StartupType Manual</pre></div>
+<p>Intel Connectivity Performance Suite only provides Intel's traffic prioritization features. Wi-Fi and Bluetooth keep working without it.</p>
+<div class="markdown-heading"><h2 class="heading-element">Things that do not help</h2><a id="user-content-things-that-do-not-help" class="anchor" aria-label="Permalink: Things that do not help" href="#things-that-do-not-help"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Signing out of Office, clearing the OneNote cache, repairing or reinstalling Office, resetting the network stack and switching DNS do nothing for this. Turning IPv6 off hides the symptom, but it also disables IPv6 for everything else.</p>
+<div class="markdown-heading"><h2 class="heading-element">If you are affected</h2><a id="user-content-if-you-are-affected" class="anchor" aria-label="Permalink: If you are affected" href="#if-you-are-affected"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Please add a 👍 or a short comment to the <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident/issues/1">tracking issue</a> with your laptop model, ICPS version and Windows build. Independent reports help the vendors reproduce it. Don't post IP addresses, email addresses or ticket numbers.</p>
+<footer>Privacy-sanitized public evidence. Private correspondence, account identifiers, ticket numbers and the machine's IP addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to overview</a></footer>
+</main></body>
+</html>

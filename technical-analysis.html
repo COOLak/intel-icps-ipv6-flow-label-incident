@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Technical analysis · Intel ICPS IPv6 flow-label incident</title>
+  <meta name="description" content="Packet captures and a controlled A/B test showing Intel Connectivity Performance Suite zeroing the IPv6 Flow Label mid-connection.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/technical-analysis.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Intel ICPS IPv6 flow-label incident">
+  <meta property="og:title" content="Technical analysis">
+  <meta property="og:description" content="Packet captures and a controlled A/B test showing Intel Connectivity Performance Suite zeroing the IPv6 Flow Label mid-connection.">
+  <meta property="og:url" content="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/technical-analysis.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Overview</a>
+  <a href="workaround.html">Am I affected?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="owner-action.html">Vendor asks</a>
+  <a href="vendor-reports.html">Report status</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
+</nav>
+<div class="markdown-heading"><h1 class="heading-element">Technical analysis</h1><a id="user-content-technical-analysis" class="anchor" aria-label="Permalink: Technical analysis" href="#technical-analysis"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Intel Connectivity Performance Suite zeroes the IPv6 Flow Label mid-connection, and Microsoft's edge resets the connection.</p>
+<div class="markdown-heading"><h2 class="heading-element">Environment</h2><a id="user-content-environment" class="anchor" aria-label="Permalink: Environment" href="#environment"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>Samsung Galaxy Book, model 960QHA (BIOS P17ALY.390.260616.03). Intel Core Ultra 7 256V (Lunar Lake). Intel Wi-Fi 7 BE201, driver 23.160.0.4.</li>
+<li>Windows 11 Pro 26H2, build 26300.9457. OneNote (Microsoft 365) 16.0.20430.20092.</li>
+<li>
+<strong>Intel Connectivity Performance Suite</strong> 40.25.926.0, preinstalled by the OEM:
+<ul>
+<li>
+<code>IntcCo11X64.sys</code> 11.5.11.19, "Intel Connectivity Traffic Control Callout Driver", service <code>INTCCoSvc</code>
+</li>
+<li>WFP provider "Rivet Networks, LLC - RFE version 6.1.0.1"</li>
+<li>Services <code>IDBWM</code> (Intel Dynamic Bandwidth Management) 1.19.0.0, <code>Intel Connectivity Network Service</code> 40.25.926.173, <code>IntelConnectService</code>
+</li>
+</ul>
+</li>
+<li>Native IPv6 from the ISP.</li>
+<li>Microsoft endpoint: Azure Front Door anycast <code>2620:1ec:50::11</code> / <code>150.171.22.11</code> (<code>ln-0001.ln-msedge.net</code>), serving <code>d.docs.live.net</code>, <code>docs.live.net</code> and <code>api.onedrive.com</code>.</li>
+</ul>
+<div class="markdown-heading"><h2 class="heading-element">Symptoms</h2><a id="user-content-symptoms" class="anchor" aria-label="Permalink: Symptoms" href="#symptoms"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>OneNote for Windows: "We can't get to your notebooks right now". Logs show <code>SoapCallFailed 0x803D0014</code> (<code>WS_E_ENDPOINT_DISCONNECTED</code>) and WinHTTP error <code>12030</code>. Notebooks opened as <strong>empty shells while showing "Up to date"</strong>. OneNote's own logs show all three notebooks stuck in error from 2026-09-12 20:59 UTC.</li>
+<li>Chromium browsers: <code>ERR_CONNECTION_RESET</code> on Microsoft 365 sign-in (<code>m365.cloud.microsoft</code>) and on other sites.</li>
+<li>OneNote on the web and on a phone kept working. They reached the same service over IPv4, or over a different network.</li>
+</ul>
+<div class="markdown-heading"><h2 class="heading-element">What happens on the wire</h2><a id="user-content-what-happens-on-the-wire" class="anchor" aria-label="Permalink: What happens on the wire" href="#what-happens-on-the-wire"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Packets were captured with <code>pktmon</code> at the Wi-Fi miniport, below every filter driver, and the IPv6 headers were decoded.</p>
+<ol>
+<li>
+<p>The Windows TCP/IP stack sends the <strong>SYN</strong> with a non-zero IPv6 Flow Label, for example <code>0xf196f</code>.</p>
+</li>
+<li>
+<p>Every <strong>ACK and data segment</strong> after the handshake leaves with <strong>Flow Label 0</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Packets leaving the PC</th>
+<th>Kept their flow label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SYN</td>
+<td>24/24</td>
+</tr>
+<tr>
+<td>FIN</td>
+<td>11/11</td>
+</tr>
+<tr>
+<td>ACK/data</td>
+<td><strong>0/42</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Later runs gave the same picture: 0/42 and 0/46.</p>
+</li>
+<li>
+<p>Microsoft's edge load-balances IPv6 on the flow label (RFC 6438 / RFC 7098 style hashing):</p>
+<ul>
+<li>The SYN reaches backend A, which answers with a SYN-ACK at hop limit <strong>47</strong>.</li>
+<li>The label-0 ACK hashes to a different node, which answers with a <strong>RST</strong> at hop limit <strong>49</strong>. A different hop limit means a different machine sent it.</li>
+<li>Backend A never sees the ACK. It retransmits its SYN-ACK at +0.4 s and +1.2 s, then sends its own RST.</li>
+</ul>
+</li>
+<li>
+<p>Result: <strong>60–100% of new IPv6 TCP connections</strong> to the Microsoft edge are reset within one round trip (about 5 ms), <strong>even when the client sends zero bytes</strong>.</p>
+</li>
+<li>
+<p>IPv4 has no flow label and was <strong>0% affected</strong>. Google, Cloudflare and Akamai over IPv6 were also unaffected, presumably because they don't hash on the label.</p>
+</li>
+</ol>
+<p>RFC 6437 says the flow label should stay constant for the life of a flow. A component that rewrites it partway through a TCP connection does not conform.</p>
+<div class="markdown-heading"><h2 class="heading-element">Which component does it</h2><a id="user-content-which-component-does-it" class="anchor" aria-label="Permalink: Which component does it" href="#which-component-does-it"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>The ICPS callout <strong><code>IpV6 Egress Transport Callout</code></strong> is registered at <code>FWPM_LAYER_OUTBOUND_TRANSPORT_V6</code> with <strong><code>FWP_CALLOUT_FLAG_CONDITIONAL_ON_FLOW</code></strong>. That flag means it only acts once a flow exists. That fits exactly: the SYN goes out untouched, and everything after it is rewritten. A second callout, <code>IpV6 Ingress Network Outbound Callout</code>, sits at <code>FWPM_LAYER_OUTBOUND_IPPACKET_V6</code>. Packets that are absorbed and re-injected (or cloned) come out with the label set to 0.</p>
+<div class="markdown-heading"><h2 class="heading-element">Controlled A/B test</h2><a id="user-content-controlled-ab-test" class="anchor" aria-label="Permalink: Controlled A/B test" href="#controlled-ab-test"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Each step was elevated and reversible, and was measured with 10 IPv6 connections to the Microsoft edge plus a packet capture.</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>IPv6 connections OK</th>
+<th>ACK/data keeping flow label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Baseline, everything running</td>
+<td>4/10</td>
+<td><strong>0/42 (0%)</strong></td>
+</tr>
+<tr>
+<td>
+<code>IDBWM</code> (Dynamic Bandwidth Management) stopped</td>
+<td>1/10</td>
+<td>0/18 (0%)</td>
+</tr>
+<tr>
+<td><strong><code>INTCCoSvc</code> driver and ICPS services stopped</strong></td>
+<td><strong>10/10</strong></td>
+<td><strong>65/65 (100%)</strong></td>
+</tr>
+<tr>
+<td>Final state, ICPS kept disabled</td>
+<td><strong>10/10</strong></td>
+<td><strong>73/73 (100%)</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Stopping the bandwidth-management service alone did not help. Stopping the traffic-control driver fixed it completely.</p>
+<p><strong>Ruled out.</strong> Each of these was disabled on its own, and the label stripping and resets continued every time: the AdGuard WFP driver, the AdGuard VPN WFP driver and the NetLimiter 5 driver. Microsoft Defender Firewall, NDU and the other Windows WFP callouts stayed active throughout. None of them strips the label once ICPS is gone.</p>
+<div class="markdown-heading"><h2 class="heading-element">Outcome</h2><a id="user-content-outcome" class="anchor" aria-label="Permalink: Outcome" href="#outcome"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>With <code>INTCCoSvc</code>, <code>IDBWM</code>, <code>Intel Connectivity Network Service</code> and <code>IntelConnectService</code> disabled:</p>
+<ul>
+<li>All three OneNote notebooks synced immediately.</li>
+<li>Microsoft 365 sign-in loads in Chromium browsers.</li>
+<li>10/10 IPv6 connections succeed, and every packet keeps its flow label.</li>
+</ul>
+<div class="markdown-heading"><h2 class="heading-element">Method</h2><a id="user-content-method" class="anchor" aria-label="Permalink: Method" href="#method"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>The investigation was run by Anthropic's Claude as an agent on the affected machine, after OpenAI's Codex had abandoned the same problem. It used:</p>
+<ul>
+<li>per-source-address socket experiments,</li>
+<li>timing of the RST against the round-trip time,</li>
+<li>NIC-level packet captures with IPv6 header decoding,</li>
+<li>an inventory of every Windows Filtering Platform provider and callout,</li>
+<li>elevated, reversible isolation of each filter driver in turn.</li>
+</ul>
+<footer>Privacy-sanitized public evidence. Private correspondence, account identifiers, ticket numbers and the machine's IP addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to overview</a></footer>
+</main></body>
+</html>

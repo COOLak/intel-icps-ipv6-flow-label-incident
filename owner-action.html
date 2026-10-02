@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>What each vendor needs to do · Intel ICPS IPv6 flow-label incident</title>
+  <meta name="description" content="Specific asks for Intel, Samsung and Microsoft to fix the IPv6 flow-label defect.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/owner-action.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Intel ICPS IPv6 flow-label incident">
+  <meta property="og:title" content="What each vendor needs to do">
+  <meta property="og:description" content="Specific asks for Intel, Samsung and Microsoft to fix the IPv6 flow-label defect.">
+  <meta property="og:url" content="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/owner-action.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Overview</a>
+  <a href="workaround.html">Am I affected?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="owner-action.html">Vendor asks</a>
+  <a href="vendor-reports.html">Report status</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
+</nav>
+<div class="markdown-heading"><h1 class="heading-element">What each vendor needs to do</h1><a id="user-content-what-each-vendor-needs-to-do" class="anchor" aria-label="Permalink: What each vendor needs to do" href="#what-each-vendor-needs-to-do"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>This is a completed root-cause analysis with controlled A/B proof, not a request for basic troubleshooting. Sign-out, cache resets, Office repair, reinstalling and "use the web version" are all irrelevant to this defect. Please route it straight to networking or platform engineering.</p>
+<div class="markdown-heading"><h2 class="heading-element">Intel (Connectivity Performance Suite / Rivet traffic-control engine)</h2><a id="user-content-intel-connectivity-performance-suite--rivet-traffic-control-engine" class="anchor" aria-label="Permalink: Intel (Connectivity Performance Suite / Rivet traffic-control engine)" href="#intel-connectivity-performance-suite--rivet-traffic-control-engine"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ol>
+<li>
+<strong>Fix the callout.</strong> When the ICPS traffic-control callout absorbs and re-injects (or clones) an IPv6 packet, it must keep the original Flow Label. Copy it from the original <code>NET_BUFFER_LIST</code> or the flow's endpoint, and never emit <code>0</code> partway through a flow. The defect is in <code>IpV6 Egress Transport Callout</code> (<code>FWPM_LAYER_OUTBOUND_TRANSPORT_V6</code>, <code>FWP_CALLOUT_FLAG_CONDITIONAL_ON_FLOW</code>) and/or <code>IpV6 Ingress Network Outbound Callout</code> (<code>FWPM_LAYER_OUTBOUND_IPPACKET_V6</code>) in <code>IntcCo11X64.sys</code> 11.5.11.19.</li>
+<li>
+<strong>Ship it</strong> through Windows Update and OEM channels, and <strong>publish an advisory</strong>. Affected users are having IPv6 connections silently reset with no way to know why.</li>
+<li>
+<strong>Until it is fixed, disable the IPv6 traffic-control path</strong> in OEM images and updates.</li>
+<li>
+<strong>Stop doing this invisibly.</strong> An always-on kernel-level packet rewriter that the owner never asked for, can't see and can't control should not be in the network path of every connection.</li>
+</ol>
+<div class="markdown-heading"><h2 class="heading-element">Samsung (Galaxy Book factory image and Samsung Update)</h2><a id="user-content-samsung-galaxy-book-factory-image-and-samsung-update" class="anchor" aria-label="Permalink: Samsung (Galaxy Book factory image and Samsung Update)" href="#samsung-galaxy-book-factory-image-and-samsung-update"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ol>
+<li>
+<strong>Pull or disable</strong> Intel Connectivity Performance Suite's traffic-control driver in the Galaxy Book image and in Samsung Update until Intel ships a fixed driver.</li>
+<li>
+<strong>Push a fix or a disabled configuration to existing owners.</strong> Nobody will diagnose this on their own. Samsung's own tools (Device care, Galaxy Book Experience, Samsung Update) neither detect nor mention it.</li>
+<li>
+<strong>Review what gets preinstalled.</strong> Kernel-level network "optimizers" belong on a laptop only if they are visible, optional and tested against mainstream services.</li>
+</ol>
+<div class="markdown-heading"><h2 class="heading-element">Microsoft</h2><a id="user-content-microsoft" class="anchor" aria-label="Permalink: Microsoft" href="#microsoft"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p><strong>Windows networking / Windows Filtering Platform</strong></p>
+<ul>
+<li>Confirm whether the WFP transport-layer injection path (<code>FwpsInjectTransportSendAsync</code> and the clone/re-inject pattern third-party callouts use) preserves the IPv6 Flow Label. If it doesn't, the stack should preserve or re-derive the endpoint's label on injection. Otherwise every third-party callout that re-injects will break flow-label-hashing load balancers, Microsoft's own included.</li>
+</ul>
+<p><strong>Azure Front Door and the OneDrive/OneNote service owners</strong></p>
+<ul>
+<li>The edge's IPv6 load balancing turns one non-conformant, but Intel-signed and OEM-preinstalled, client driver into a hard outage for OneNote, OneDrive and Microsoft 365. It should tolerate a flow label that changes within a connection, as Google, Cloudflare and Akamai demonstrably do. Options include 5-tuple-consistent hashing, or SYN-cookie/state sharing between nodes.</li>
+</ul>
+<p><strong>OneNote</strong></p>
+<ul>
+<li>A connection reset is reported as "We can't get to your notebooks right now". Worse, a notebook that never downloaded shows a false "Up to date".</li>
+<li>There is no IPv4 fallback after an IPv6 reset, and no diagnosable error is surfaced to the user.</li>
+<li>Customers lose weeks of sync and get told to sign out and reinstall, which risks data loss. An escalated Microsoft support case opened in August 2026 never found the cause.</li>
+</ul>
+<footer>Privacy-sanitized public evidence. Private correspondence, account identifiers, ticket numbers and the machine's IP addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to overview</a></footer>
+</main></body>
+</html>

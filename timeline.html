@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Timeline · Intel ICPS IPv6 flow-label incident</title>
+  <meta name="description" content="Dated timeline of the Intel ICPS IPv6 flow-label incident.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/timeline.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Intel ICPS IPv6 flow-label incident">
+  <meta property="og:title" content="Timeline">
+  <meta property="og:description" content="Dated timeline of the Intel ICPS IPv6 flow-label incident.">
+  <meta property="og:url" content="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/timeline.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Overview</a>
+  <a href="workaround.html">Am I affected?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="owner-action.html">Vendor asks</a>
+  <a href="vendor-reports.html">Report status</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
+</nav>
+<div class="markdown-heading"><h1 class="heading-element">Timeline</h1><a id="user-content-timeline" class="anchor" aria-label="Permalink: Timeline" href="#timeline"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>All times are UTC.</p>
+<div class="markdown-heading"><h2 class="heading-element">2026-08-27: first reports to Microsoft</h2><a id="user-content-2026-08-27-first-reports-to-microsoft" class="anchor" aria-label="Permalink: 2026-08-27: first reports to Microsoft" href="#2026-08-27-first-reports-to-microsoft"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>OneNote desktop shows notebooks as empty while reporting "Up to date". The pattern is documented: Microsoft endpoints reset over IPv6 and work over IPv4. It is reported through Microsoft Support article feedback, a public <a href="https://feedbackportal.microsoft.com/feedback/idea/dd326ebc-9da1-f111-85ce-7c1e529382f4" rel="nofollow">Feedback Portal idea</a> and a Microsoft Support chat. The chat case is escalated for product review. The cause is not identified.</p>
+<div class="markdown-heading"><h2 class="heading-element">2026-09-12, 20:59 UTC: OneNote sync fails again</h2><a id="user-content-2026-09-12-2059-utc-onenote-sync-fails-again" class="anchor" aria-label="Permalink: 2026-09-12, 20:59 UTC: OneNote sync fails again" href="#2026-09-12-2059-utc-onenote-sync-fails-again"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>OneNote's own logs show all three notebooks entering an error state ("We can't get to your notebooks right now"). They stay broken for nearly three weeks.</p>
+<div class="markdown-heading"><h2 class="heading-element">2026-10-02: Codex gives up</h2><a id="user-content-2026-10-02-codex-gives-up" class="anchor" aria-label="Permalink: 2026-10-02: Codex gives up" href="#2026-10-02-codex-gives-up"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>An OpenAI Codex session investigates the sync failure and abandons it without finding a cause.</p>
+<div class="markdown-heading"><h2 class="heading-element">2026-10-02: Claude finds the cause</h2><a id="user-content-2026-10-02-claude-finds-the-cause" class="anchor" aria-label="Permalink: 2026-10-02: Claude finds the cause" href="#2026-10-02-claude-finds-the-cause"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Anthropic's Claude, running as an agent on the affected machine, takes over:</p>
+<ul>
+<li>It confirms that IPv6 connections to Microsoft's Azure Front Door edge are reset within one round trip, while IPv4 is clean.</li>
+<li>It captures traffic at the Wi-Fi miniport. Every post-handshake packet leaves with IPv6 Flow Label 0, and the RST comes from a different machine than the SYN-ACK (hop limit 49 vs 47).</li>
+<li>It inventories the Windows Filtering Platform callouts and isolates the AdGuard, AdGuard VPN, NetLimiter and Intel filter drivers one at a time.</li>
+</ul>
+<div class="markdown-heading"><h2 class="heading-element">2026-10-02, 15:21 UTC: fix confirmed</h2><a id="user-content-2026-10-02-1521-utc-fix-confirmed" class="anchor" aria-label="Permalink: 2026-10-02, 15:21 UTC: fix confirmed" href="#2026-10-02-1521-utc-fix-confirmed"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>With the Intel Connectivity Performance Suite driver (<code>INTCCoSvc</code>) and its services stopped, 10/10 IPv6 connections succeed and 65/65 packets keep their flow label. ICPS is left disabled: 10/10 connections, 73/73 labels. All three OneNote notebooks sync within seconds. Microsoft 365 sign-in works in Chromium browsers again.</p>
+<div class="markdown-heading"><h2 class="heading-element">2026-10-02: reported to all three vendors</h2><a id="user-content-2026-10-02-reported-to-all-three-vendors" class="anchor" aria-label="Permalink: 2026-10-02: reported to all three vendors" href="#2026-10-02-reported-to-all-three-vendors"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>
+<strong>Microsoft:</strong> full root cause sent into the existing support case. Two public Feedback Hub reports filed (<a href="https://aka.ms/AA13q37q" rel="nofollow">OneNote</a>, <a href="https://aka.ms/AA13q37r" rel="nofollow">Windows networking</a>). Comment added to the Feedback Portal idea. Answer posted on <a href="https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo" rel="nofollow">Microsoft Q&amp;A</a>.</li>
+<li>
+<strong>Intel, 16:47 UTC:</strong> Intel Customer Support case opened and acknowledged.</li>
+<li>
+<strong>Intel, 17:08 UTC:</strong> <a href="https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647" rel="nofollow">Intel Community post</a> published on the Wireless board.</li>
+<li>
+<strong>Samsung:</strong> Samsung Community US report posted, then hidden by Samsung's spam filter.</li>
+<li>This public tracker is created.</li>
+</ul>
+<footer>Privacy-sanitized public evidence. Private correspondence, account identifiers, ticket numbers and the machine's IP addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to overview</a></footer>
+</main></body>
+</html>

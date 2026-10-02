@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://coolak.github.io/intel-icps-ipv6-flow-label-incident/sitemap.xml

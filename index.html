@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Intel ICPS breaks IPv6, OneNote and Microsoft 365</title>
+  <meta name="description" content="Intel Connectivity Performance Suite, preinstalled on Intel laptops, zeroes the IPv6 Flow Label mid-connection. Microsoft's edge resets the connection. OneNote sync dies. Root cause, proof and workaround.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Intel ICPS IPv6 flow-label incident">
+  <meta property="og:title" content="Preinstalled Intel driver silently breaks IPv6, OneNote and Microsoft 365">
+  <meta property="og:description" content="Packet captures and an A/B test show Intel Connectivity Performance Suite zeroing the IPv6 Flow Label mid-connection. Microsoft's edge resets the connection.">
+  <meta property="og:url" content="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Preinstalled Intel driver silently breaks IPv6, OneNote and Microsoft 365">
+  <meta name="twitter:description" content="Root cause, wire evidence, vendor reports and a five-minute workaround.">
+  <link rel="stylesheet" href="site.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Report","name":"Intel Connectivity Performance Suite zeroes IPv6 Flow Label mid-connection","url":"https://coolak.github.io/intel-icps-ipv6-flow-label-incident/","dateCreated":"2026-10-02","dateModified":"2026-10-02","about":["Intel Connectivity Performance Suite","IPv6 flow label","OneNote","Azure Front Door","Samsung Galaxy Book"],"isAccessibleForFree":true}</script>
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Overview</a>
+  <a href="workaround.html">Am I affected?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="owner-action.html">Vendor asks</a>
+  <a href="vendor-reports.html">Report status</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
+</nav>
+
+<p class="kicker">Incident report · Intel · Microsoft · Samsung</p>
+<h1>A preinstalled Intel driver is silently breaking IPv6, OneNote and Microsoft 365</h1>
+<p class="lede">Intel Connectivity Performance Suite rewrites the IPv6 Flow Label to zero partway through every TCP connection. Microsoft's edge routes on that label, so the rest of each connection lands on a server that never saw it start, and gets reset. OneNote stopped syncing for nearly three weeks, and the cause was nowhere a normal user or support desk would look.</p>
+<p><span class="status">No vendor fix yet</span> <span class="pill">Root cause confirmed</span> <span class="pill">Workaround available</span> <span class="pill">Updated 2026-10-02</span></p>
+
+<div class="grid">
+  <div class="card"><h2>Flow label kept, ICPS running</h2><div class="metric">0 / 42</div><p class="muted">post-handshake packets on the wire</p></div>
+  <div class="card"><h2>Flow label kept, ICPS stopped</h2><div class="metric">65 / 65</div><p class="muted">same test, driver disabled</p></div>
+  <div class="card"><h2>IPv6 connections that survived</h2><div class="metric">4 → 10 / 10</div><p class="muted">before and after disabling the driver</p></div>
+  <div class="card"><h2>OneNote desktop sync</h2><div class="metric">~3 weeks</div><p class="muted">broken, with empty notebooks shown as "Up to date"</p></div>
+</div>
+
+<section class="panel proof">
+  <h2>Affected? Check in one command</h2>
+  <p>In PowerShell: <code>1..10 | % { curl.exe -6 -sS -o NUL -w "%{http_code}`n" https://api.onedrive.com/ }</code>. Any <em>"Connection was reset"</em> lines, on a PC with Intel Connectivity Performance Suite, point to this bug. <a href="workaround.html">Check, fix and undo instructions</a>.</p>
+</section>
+
+<h2>What is going on</h2>
+<p>The driver is <code>IntcCo11X64.sys</code> 11.5.11.19, the "Intel Connectivity Traffic Control Callout Driver" (service <code>INTCCoSvc</code>, WFP provider "Rivet Networks, LLC - RFE version 6.1.0.1"). It ships as part of Intel Connectivity Performance Suite 40.25.926.0, preinstalled on the affected Samsung Galaxy Book. The Windows stack sends the SYN with a proper IPv6 Flow Label. The Intel callout then re-emits every ACK and data segment with the label set to <code>0</code>.</p>
+<p>RFC 6437 expects the label to stay constant for the life of a flow. Microsoft's Azure Front Door hashes on it, so the label-0 packets go to a different node, which answers with a reset. The SYN-ACK comes back at hop limit 47 and the RST at hop limit 49, so two different machines are answering. IPv4 has no flow label and is unaffected. That is why OneNote on the web and on a phone kept working and nobody could explain the failure. <a href="technical-analysis.html">Full wire evidence and A/B table</a>.</p>
+
+<h2>Three companies, three failures</h2>
+<div class="grid">
+  <div class="card warning"><h3>Intel</h3><p>Ships a kernel driver that breaks a basic IPv6 rule on every connection. It reports nothing, so the owner can't see it.</p></div>
+  <div class="card warning"><h3>Samsung</h3><p>Preinstalled it. The owner never chose it, and none of Samsung's tools detect or mention it.</p></div>
+  <div class="card warning"><h3>Microsoft</h3><p>Its edge falls over on it, where Google, Cloudflare and Akamai don't. OneNote then shows a dead connection as "Up to date". An escalated support case opened in August never found the cause.</p></div>
+</div>
+<p><a href="owner-action.html">Read the specific asks for each vendor</a>.</p>
+
+<h2>How it was found</h2>
+<p>Sign-out, cache resets, Office repair and reinstalling are all irrelevant to this defect, and none of them could have found it. An OpenAI Codex session gave up on it. Anthropic's Claude, running as an agent on the affected machine, then found it in a few hours. It timed the resets against the round trip, captured traffic below every filter driver and decoded the IPv6 headers. It inventoried every Windows Filtering Platform callout and disabled network filter drivers one at a time, reversibly, until only the Intel driver was left.</p>
+
+<h2>Reported to</h2>
+<div class="links">
+  <a href="https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647">Intel Community</a>
+  <a href="https://aka.ms/AA13q37q">Feedback Hub: OneNote</a>
+  <a href="https://aka.ms/AA13q37r">Feedback Hub: Windows networking</a>
+  <a href="https://feedbackportal.microsoft.com/feedback/idea/dd326ebc-9da1-f111-85ce-7c1e529382f4">Microsoft Feedback Portal</a>
+  <a href="https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo">Microsoft Q&amp;A</a>
+</div>
+<p class="muted">Plus private Intel and Microsoft support cases. Samsung's community board hid the Samsung report as spam. <a href="vendor-reports.html">Status of every report</a>.</p>
+
+<h2>Seeing this too?</h2>
+<p>Add your laptop model, ICPS version and Windows build to the <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident/issues/1">tracking issue</a>. Don't post IP addresses, email addresses or ticket numbers.</p>
+
+<footer>Privacy-sanitized public evidence. Private correspondence, account identifiers, ticket numbers and the machine's IP addresses are omitted. Microsoft endpoint addresses quoted are public anycast addresses. · <a href="incident-state.json">Machine-readable state</a></footer>
+</main></body>
+</html>
