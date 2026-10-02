@@ -24,6 +24,7 @@ Last updated: **2026-10-02**. "Filed" means submitted or published. It does not 
 | Channel | Visibility | Status |
 |---|---|---|
 | Samsung Community US, Computers board | Public | Posted 2026-10-02, then hidden by Samsung's spam filter. |
+| Samsung Care live chat (Laptop Department) | Private | Case opened 2026-10-02 and noted for escalation to Galaxy Book software engineering. Awaiting follow-up. |
 
 ## Not yet received
 

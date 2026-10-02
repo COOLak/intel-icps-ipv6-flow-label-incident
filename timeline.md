@@ -39,5 +39,5 @@ With the Intel Connectivity Performance Suite driver (`INTCCoSvc`) and its servi
 - **Microsoft:** full root cause sent into the existing support case. Two public Feedback Hub reports filed ([OneNote](https://aka.ms/AA13q37q), [Windows networking](https://aka.ms/AA13q37r)). Comment added to the Feedback Portal idea. Answer posted on [Microsoft Q&A](https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo).
 - **Intel, 16:47 UTC:** Intel Customer Support case opened and acknowledged.
 - **Intel, 17:08 UTC:** [Intel Community post](https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647) published on the Wireless board.
-- **Samsung:** Samsung Community US report posted, then hidden by Samsung's spam filter.
+- **Samsung:** Samsung Community US report posted, then hidden by Samsung's spam filter. Samsung Care support case opened through live chat, with escalation to Galaxy Book engineering requested.
 - This public tracker is created.

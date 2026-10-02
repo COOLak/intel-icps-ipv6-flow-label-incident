@@ -56,7 +56,8 @@
       {"channel": "Microsoft Support case", "public": false, "opened": "2026-08-27", "root_cause_sent": "2026-10-02"}
     ],
     "samsung": [
-      {"channel": "Samsung Community US", "public": true, "state": "posted_then_hidden_as_spam"}
+      {"channel": "Samsung Community US", "public": true, "state": "posted_then_hidden_as_spam"},
+      {"channel": "Samsung Care support case (live chat)", "public": false, "date": "2026-10-02", "state": "opened_escalation_requested"}
     ],
     "other": []
   },
