@@ -1,4 +1,4 @@
-# BREAKING: Preinstalled Intel driver silently breaks IPv6, knocking OneNote and Microsoft 365 offline
+# Intel Connectivity Performance Suite breaks IPv6, OneNote and Microsoft 365
 
 > **Status, October 2, 2026:** Root cause confirmed with packet captures and a controlled A/B test. Reported to Intel, Microsoft and Samsung. **No vendor fix yet.** Affected users can apply the [workaround](workaround.md) today.
 
