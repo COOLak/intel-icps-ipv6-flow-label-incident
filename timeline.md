@@ -2,6 +2,14 @@
 
 All times are UTC.
 
+## 2021–2025: the same pattern, reported again and again
+
+Users of Killer and Intel connectivity software publicly report IPv6-only connection resets, often only to Microsoft services. They are told to check their ISP or reinstall Office, and are sent from one vendor to the next. See [prior reports](prior-reports.md).
+
+## 2025-11: Intel is given the exact mechanism
+
+A post on Intel Community explains that the Intel connectivity service clears the IPv6 flow label at the TLS handshake and breaks cloud ECMP load balancing. Intel asks for details, then closes the inquiry for lack of a response. In 2026, other organizations add Microsoft 365 and SharePoint `ERR_CONNECTION_RESET` reports to the same thread. One notes that Windows Update reinstalled the software.
+
 ## 2026-08-27: first reports to Microsoft
 
 OneNote desktop shows notebooks as empty while reporting "Up to date". The pattern is documented: Microsoft endpoints reset over IPv6 and work over IPv4. It is reported through Microsoft Support article feedback, a public [Feedback Portal idea](https://feedbackportal.microsoft.com/feedback/idea/dd326ebc-9da1-f111-85ce-7c1e529382f4) and a Microsoft Support chat. The chat case is escalated for product review. The cause is not identified.

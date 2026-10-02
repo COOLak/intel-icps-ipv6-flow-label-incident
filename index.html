@@ -26,6 +26,7 @@
   <a href="owner-action.html">Vendor asks</a>
   <a href="vendor-reports.html">Report status</a>
   <a href="timeline.html">Timeline</a>
+  <a href="prior-reports.html">Prior reports</a>
   <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
 </nav>
 
@@ -33,6 +34,11 @@
 <h1>A preinstalled Intel driver is silently breaking IPv6, OneNote and Microsoft 365</h1>
 <p class="lede">Intel Connectivity Performance Suite rewrites the IPv6 Flow Label to zero partway through every TCP connection. Microsoft's edge routes on that label, so the rest of each connection lands on a server that never saw it start, and gets reset. OneNote stopped syncing for nearly three weeks, and the cause was nowhere a normal user or support desk would look.</p>
 <p><span class="status">No vendor fix yet</span> <span class="pill">Root cause confirmed</span> <span class="pill">Workaround available</span> <span class="pill">Updated 2026-10-02</span></p>
+
+<section class="panel warning">
+  <h2>Intel was told in November 2025, and closed the thread</h2>
+  <p>An engineer posted this exact mechanism on Intel's own forum eleven months ago: the Intel connectivity service clears the IPv6 flow label and breaks cloud load balancing. Intel sent a questionnaire, then closed the inquiry for lack of a response. Other organizations have since reported Microsoft 365 and SharePoint resets in the same thread. One says Windows Update reinstalled the software after they removed it. Similar Killer-era reports go back to 2021. <a href="prior-reports.html">Read the prior reports</a>.</p>
+</section>
 
 <div class="grid">
   <div class="card"><h2>Flow label kept, ICPS running</h2><div class="metric">0 / 42</div><p class="muted">post-handshake packets on the wire</p></div>
@@ -59,7 +65,7 @@
 <p><a href="owner-action.html">Read the specific asks for each vendor</a>.</p>
 
 <h2>How it was found</h2>
-<p>Sign-out, cache resets, Office repair and reinstalling are all irrelevant to this defect, and none of them could have found it. An OpenAI Codex session gave up on it. Anthropic's Claude, running as an agent on the affected machine, then found it in a few hours. It timed the resets against the round trip, captured traffic below every filter driver and decoded the IPv6 headers. It inventoried every Windows Filtering Platform callout and disabled network filter drivers one at a time, reversibly, until only the Intel driver was left.</p>
+<p>Sign-out, cache resets, Office repair and reinstalling are all irrelevant to this defect, and none of them could have found it. In this case, a Microsoft support escalation ran for five weeks without finding it, and an OpenAI Codex session gave up on it. Anthropic's Claude, running as an agent on the affected machine, then found it in a few hours, without knowing about Intel's earlier thread. It timed the resets against the round trip, captured traffic below every filter driver and decoded the IPv6 headers. It inventoried every Windows Filtering Platform callout and disabled network filter drivers one at a time, reversibly, until only the Intel driver was left.</p>
 
 <h2>Reported to</h2>
 <div class="links">

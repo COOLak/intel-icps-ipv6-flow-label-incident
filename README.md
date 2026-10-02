@@ -6,9 +6,12 @@ This repository is a public, privacy-sanitized evidence hub for a defect in **In
 
 From the user's side this looks like random **"connection reset"** errors on many websites, and a **OneNote that can't reach its notebooks** while claiming they are "Up to date". IPv4 is unaffected, which is why the web and phone versions kept working and nobody could explain the failure.
 
+> **Intel was told in November 2025.** An engineer posted this exact mechanism on Intel Community ("Intel Connectivity Network Service is causing the ipv6 flowtable attribute set to 0"). Intel closed the inquiry for lack of a response. Similar reports go back to 2021. See [prior reports](prior-reports.md).
+
 ## Start here
 
 - **[Open the public incident page](https://coolak.github.io/intel-icps-ipv6-flow-label-incident/)**
+- **[Prior reports: Intel was told, and closed the thread](prior-reports.md)**
 - **[Am I affected? Check and fix in five minutes](workaround.md)**
 - **[Full technical analysis: wire evidence and A/B proof](technical-analysis.md)**
 - **[What Intel, Microsoft and Samsung need to do](owner-action.md)**
@@ -41,7 +44,7 @@ The details and specific asks are in [owner-action.md](owner-action.md).
 
 Ordinary troubleshooting couldn't find this. Sign-out, cache resets, Office repair, reinstalling and "use the web version" are all irrelevant to it.
 
-The cause was found in a few hours of packet-level work by Anthropic's **Claude**, run as an agent on the affected machine, after OpenAI's Codex had given up on the same problem earlier that day. Claude timed the resets against the round trip, captured traffic at the Wi-Fi miniport and decoded the IPv6 headers. It then inventoried every Windows Filtering Platform callout and switched network filter drivers off one at a time, reversibly and with elevation, until only the Intel driver was left.
+In this case, an escalated Microsoft support case ran for five weeks without finding the cause, and OpenAI's Codex gave up on it. The cause was then found in a few hours of packet-level work by Anthropic's **Claude**, run as an agent on the affected machine, without knowing about Intel's earlier forum thread. Claude timed the resets against the round trip, captured traffic at the Wi-Fi miniport and decoded the IPv6 headers. It then inventoried every Windows Filtering Platform callout and switched network filter drivers off one at a time, reversibly and with elevation, until only the Intel driver was left.
 
 ## Privacy
 

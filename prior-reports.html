@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Prior reports: Intel was told, and closed the thread · Intel ICPS IPv6 flow-label incident</title>
+  <meta name="description" content="Public reports since 2021 of the same Intel connectivity software failure, including a November 2025 Intel Community report of the exact flow-label mechanism that Intel closed.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/prior-reports.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Intel ICPS IPv6 flow-label incident">
+  <meta property="og:title" content="Prior reports: Intel was told, and closed the thread">
+  <meta property="og:description" content="Public reports since 2021 of the same Intel connectivity software failure, including a November 2025 Intel Community report of the exact flow-label mechanism that Intel closed.">
+  <meta property="og:url" content="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/prior-reports.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Overview</a>
+  <a href="workaround.html">Am I affected?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="owner-action.html">Vendor asks</a>
+  <a href="vendor-reports.html">Report status</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="prior-reports.html">Prior reports</a>
+  <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
+</nav>
+<div class="markdown-heading"><h1 class="heading-element">Prior reports: Intel was told, and closed the thread</h1><a id="user-content-prior-reports-intel-was-told-and-closed-the-thread" class="anchor" aria-label="Permalink: Prior reports: Intel was told, and closed the thread" href="#prior-reports-intel-was-told-and-closed-the-thread"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>This defect isn't new. Users have publicly reported the same failure pattern on Intel's connectivity software since at least 2021. In <strong>November 2025</strong>, an engineer gave Intel the exact mechanism on Intel's own forum. Intel sent a questionnaire, then closed the thread.</p>
+<div class="markdown-heading"><h2 class="heading-element">The November 2025 report on Intel Community</h2><a id="user-content-the-november-2025-report-on-intel-community" class="anchor" aria-label="Permalink: The November 2025 report on Intel Community" href="#the-november-2025-report-on-intel-community"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p><strong><a href="https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/m-p/1725616" rel="nofollow">Intel Connectivity Network Service is causing the ipv6 flowtable attribute set to 0</a></strong> (Intel Community, Wireless board)</p>
+<ul>
+<li>The author identifies Intel Connectivity Performance Suite, delivered through <strong>Windows Update</strong> as "Intel Corporation - SoftwareComponent - 4.1025.207.1". When the TLS handshake starts, it clears the IPv6 flow label. The author explains that this breaks ECMP in large cloud networks, because the flow is "randomly send to different backend device after tcp handshake". The post includes a <code>curl -6</code> reproduction against an Azure endpoint, and stopping the service fixes it.</li>
+<li>Intel moved the thread to another forum and asked for details. When there was no answer, it closed the inquiry: <em>"As I haven't received a response, I will proceed to close this inquiry."</em>
+</li>
+<li>Later replies from other organizations report the same symptom: <strong>M365 Search and SharePoint fail with <code>ERR_CONNECTION_RESET</code></strong> on IPv6, and disabling the Intel service fixes it. One adds that removing the software <em>"took just one Windows Update and the problem was back"</em>.</li>
+</ul>
+<p>The author re-posted when the first thread was lost: <a href="https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/m-p/1727313" rel="nofollow">second thread, November 2025</a>.</p>
+<div class="markdown-heading"><h2 class="heading-element">Earlier reports of the same pattern (Killer / Intel connectivity software)</h2><a id="user-content-earlier-reports-of-the-same-pattern-killer--intel-connectivity-software" class="anchor" aria-label="Permalink: Earlier reports of the same pattern (Killer / Intel connectivity software)" href="#earlier-reports-of-the-same-pattern-killer--intel-connectivity-software"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Where</th>
+<th>What users saw</th>
+<th>What fixed it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2021–2022</td>
+<td><a href="https://github.com/jquery/codeorigin.jquery.com/issues/80">jQuery CDN issue on GitHub</a></td>
+<td>
+<code>curl -6</code> reset, <code>curl -4</code> fine. The CDN found nothing on its side.</td>
+<td>Owners of Dell XPS and Alienware machines traced it to Killer software</td>
+</tr>
+<tr>
+<td>2022</td>
+<td><a href="https://learn.microsoft.com/en-us/answers/questions/4340112/random-connection-reset-error" rel="nofollow">Microsoft Q&amp;A</a></td>
+<td>Connection resets only on Microsoft sites (Bing, Office, SharePoint, LinkedIn)</td>
+<td>Uninstalling or disabling Killer, or disabling IPv6. Windows Update reinstalled Killer.</td>
+</tr>
+<tr>
+<td>2022–2025</td>
+<td><a href="https://community.intel.com/t5/Wireless/Killer-Network-Service-preventing-connection-to-some-websites/td-p/1366144" rel="nofollow">Intel Community</a></td>
+<td>Resets only over IPv6</td>
+<td>Disabling the Killer Network Service. Intel blamed the user's ISP.</td>
+</tr>
+<tr>
+<td>2023–2024</td>
+<td><a href="https://community.intel.com/t5/Wireless/How-to-permanently-disable-Killer-Prioritization-Engine/m-p/1469486" rel="nofollow">Intel Community</a></td>
+<td>Teams/SharePoint, OneDrive sign-in and Outlook broken. One user spent three weeks with Microsoft 365 support, then paid for a technician.</td>
+<td>Disabling the Killer Prioritization Engine</td>
+</tr>
+<tr>
+<td>2024</td>
+<td><a href="https://learn.microsoft.com/en-us/answers/questions/3739394/err-connection-reset-on-some-sites" rel="nofollow">Microsoft Q&amp;A</a></td>
+<td>
+<code>ERR_CONNECTION_RESET</code> on some sites, including Bing</td>
+<td>Disabling the Killer services or IPv6</td>
+</tr>
+<tr>
+<td>2025</td>
+<td><a href="https://community.brave.app/t/err-connection-reset-errors-on-new-win-11-laptops/637663" rel="nofollow">Brave Community</a></td>
+<td>Resets on several new Lenovo laptops</td>
+<td>Disabling the Intel connectivity service</td>
+</tr>
+<tr>
+<td>2026</td>
+<td><a href="https://forum.vivaldi.net/topic/114868/websites-show-of-error-err_connection_reset?page=2" rel="nofollow">Vivaldi forum</a></td>
+<td><code>ERR_CONNECTION_RESET</code></td>
+<td>Stopping the Intel Connectivity Network Service</td>
+</tr>
+</tbody>
+</table>
+<p>A public remediation script for IT administrators also warns that Intel Connectivity Performance Suite <a href="https://github.com/realmjoin/realmjoin-remediation/blob/main/intel/remove-intel-connectivity-performance-suite/README.md">"may cause network issues when IPv6 is enabled"</a>.</p>
+<p>The reports above are summarized from the linked public pages. The November 2025 Intel thread was checked directly on 2026-10-02.</p>
+<div class="markdown-heading"><h2 class="heading-element">What this case adds</h2><a id="user-content-what-this-case-adds" class="anchor" aria-label="Permalink: What this case adds" href="#what-this-case-adds"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>
+<strong>Wire-level proof</strong> at the Wi-Fi miniport: SYN 24/24 labels kept, ACK/data 0/42. The RST comes from a different machine (hop limit 49 vs 47).</li>
+<li>
+<strong>The exact component</strong>: the <code>IpV6 Egress Transport Callout</code> in <code>IntcCo11X64.sys</code> 11.5.11.19, registered with <code>FWP_CALLOUT_FLAG_CONDITIONAL_ON_FLOW</code>.</li>
+<li>
+<strong>A controlled A/B test</strong> showing that stopping only the bandwidth-management service doesn't help, while stopping the traffic-control driver fixes 100% of connections.</li>
+<li>
+<strong>The consumer impact</strong>: OneNote desktop silently showing empty notebooks as "Up to date" for nearly three weeks, plus an escalated Microsoft support case that never found the cause.</li>
+</ul>
+<div class="markdown-heading"><h2 class="heading-element">Why it matters</h2><a id="user-content-why-it-matters" class="anchor" aria-label="Permalink: Why it matters" href="#why-it-matters"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Intel had the mechanism in writing eleven months before this report and closed the thread. Users have been told to blame their ISP, reinstall Office or pay for technicians. Windows Update keeps putting the software back after people remove it.</p>
+<footer>Privacy-sanitized public evidence. Private correspondence, account identifiers, ticket numbers and the machine's IP addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to overview</a></footer>
+</main></body>
+</html>
