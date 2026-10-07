@@ -22,15 +22,21 @@
   <a href="owner-action.html">Vendor asks</a>
   <a href="vendor-reports.html">Report status</a>
   <a href="timeline.html">Timeline</a>
+  <a href="affected-oems.html">Not only Samsung</a>
   <a href="prior-reports.html">Prior reports</a>
   <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
 </nav>
 <div class="markdown-heading"><h1 class="heading-element">What each vendor needs to do</h1><a id="user-content-what-each-vendor-needs-to-do" class="anchor" aria-label="Permalink: What each vendor needs to do" href="#what-each-vendor-needs-to-do"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
 <p>This is a completed root-cause analysis with controlled A/B proof, not a request for basic troubleshooting. Sign-out, cache resets, Office repair, reinstalling and "use the web version" are all irrelevant to this defect. Please route it straight to networking or platform engineering.</p>
+<blockquote>
+<p><strong>Update, October 7, 2026:</strong> Intel's current generic ICPS 50.26.623.243 (driver <code>IntcCo11X64.sys</code> 12.10.14.33) does not have the bug. The OEM build 40.25.926.173 does, and it reached the affected laptop through Windows Update. So the fix exists. What's missing is getting it to the people who have the old build. The asks below are updated accordingly.</p>
+</blockquote>
 <div class="markdown-heading"><h2 class="heading-element">Intel (Connectivity Performance Suite / Rivet traffic-control engine)</h2><a id="user-content-intel-connectivity-performance-suite--rivet-traffic-control-engine" class="anchor" aria-label="Permalink: Intel (Connectivity Performance Suite / Rivet traffic-control engine)" href="#intel-connectivity-performance-suite--rivet-traffic-control-engine"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
-<ol>
+<ol start="0">
 <li>
-<strong>Fix the callout.</strong> When the ICPS traffic-control callout absorbs and re-injects (or clones) an IPv6 packet, it must keep the original Flow Label. Copy it from the original <code>NET_BUFFER_LIST</code> or the flow's endpoint, and never emit <code>0</code> partway through a flow. The defect is in <code>IpV6 Egress Transport Callout</code> (<code>FWPM_LAYER_OUTBOUND_TRANSPORT_V6</code>, <code>FWP_CALLOUT_FLAG_CONDITIONAL_ON_FLOW</code>) and/or <code>IpV6 Ingress Network Outbound Callout</code> (<code>FWPM_LAYER_OUTBOUND_IPPACKET_V6</code>) in <code>IntcCo11X64.sys</code> 11.5.11.19.</li>
+<strong>Say which version fixed it</strong>, and get that build to every OEM that ships ICPS and onto Windows Update. Publish an advisory so that users with IPv6 connection resets can find the cause, instead of being told to uninstall ICPS.</li>
+<li>
+<strong>Fix the callout</strong> (done in the generic build, per the October 7 test). When the ICPS traffic-control callout absorbs and re-injects (or clones) an IPv6 packet, it must keep the original Flow Label. Copy it from the original <code>NET_BUFFER_LIST</code> or the flow's endpoint, and never emit <code>0</code> partway through a flow. The defect is in <code>IpV6 Egress Transport Callout</code> (<code>FWPM_LAYER_OUTBOUND_TRANSPORT_V6</code>, <code>FWP_CALLOUT_FLAG_CONDITIONAL_ON_FLOW</code>) and/or <code>IpV6 Ingress Network Outbound Callout</code> (<code>FWPM_LAYER_OUTBOUND_IPPACKET_V6</code>) in <code>IntcCo11X64.sys</code> 11.5.11.19.</li>
 <li>
 <strong>Ship it</strong> through Windows Update and OEM channels, and <strong>publish an advisory</strong>. Affected users are having IPv6 connections silently reset with no way to know why.</li>
 <li>
@@ -41,13 +47,17 @@
 <div class="markdown-heading"><h2 class="heading-element">Samsung (Galaxy Book factory image and Samsung Update)</h2><a id="user-content-samsung-galaxy-book-factory-image-and-samsung-update" class="anchor" aria-label="Permalink: Samsung (Galaxy Book factory image and Samsung Update)" href="#samsung-galaxy-book-factory-image-and-samsung-update"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
 <ol>
 <li>
-<strong>Pull or disable</strong> Intel Connectivity Performance Suite's traffic-control driver in the Galaxy Book image and in Samsung Update until Intel ships a fixed driver.</li>
+<strong>Replace the 40.25.926.173 ICPS packages</strong> that Samsung publishes through Windows Update and Samsung Update with a fixed build (50.26.623.243 or later), or pull them. Intel's fixed build exists; Galaxy Book owners are still being sent the broken one.</li>
 <li>
 <strong>Push a fix or a disabled configuration to existing owners.</strong> Nobody will diagnose this on their own. Samsung's own tools (Device care, Galaxy Book Experience, Samsung Update) neither detect nor mention it.</li>
 <li>
 <strong>Review what gets preinstalled.</strong> Kernel-level network "optimizers" belong on a laptop only if they are visible, optional and tested against mainstream services.</li>
 </ol>
 <div class="markdown-heading"><h2 class="heading-element">Microsoft</h2><a id="user-content-microsoft" class="anchor" aria-label="Permalink: Microsoft" href="#microsoft"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p><strong>Windows Update / Hardware Dev Center</strong></p>
+<ul>
+<li>Windows Update delivered the broken ICPS 40.25.926.173 extension and component to the affected laptop on 2026-05-09, 2026-05-14 and again on 2026-06-13. Stop offering those submissions, or require them to be superseded by a fixed build. They break Microsoft's own services over IPv6 on the machines that receive them.</li>
+</ul>
 <p><strong>Windows networking / Windows Filtering Platform</strong></p>
 <ul>
 <li>Confirm whether the WFP transport-layer injection path (<code>FwpsInjectTransportSendAsync</code> and the clone/re-inject pattern third-party callouts use) preserves the IPv6 Flow Label. If it doesn't, the stack should preserve or re-derive the endpoint's label on injection. Otherwise every third-party callout that re-injects will break flow-label-hashing load balancers, Microsoft's own included.</li>

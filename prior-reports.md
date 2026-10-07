@@ -1,16 +1,20 @@
-# Prior reports: Intel was told, and closed the thread
+# Prior reports: Intel was told, and closed the thread twice
 
-This defect isn't new. Users have publicly reported the same failure pattern on Intel's connectivity software since at least 2021. In **November 2025**, an engineer gave Intel the exact mechanism on Intel's own forum. Intel sent a questionnaire, then closed the thread.
+This defect isn't new. Users have publicly reported the same failure pattern on Intel's connectivity software since at least 2021. In **September 2025**, an engineer gave Intel the exact mechanism on Intel's own forum. Intel closed the thread, the engineer posted it again in November, and Intel closed it again.
 
-## The November 2025 report on Intel Community
+## The September and November 2025 reports on Intel Community
 
-**[Intel Connectivity Network Service is causing the ipv6 flowtable attribute set to 0](https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/m-p/1725616)** (Intel Community, Wireless board)
+**[Intel Connectivity Network Service is causing the ipv6 flowtable attribute set to 0](https://community.intel.com/t5/Ethernet-Products/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/td-p/1716740)** (first posted 2025-09-12; [re-posted 2025-11-03](https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/td-p/1724647) on the Wireless board)
 
-- The author identifies Intel Connectivity Performance Suite, delivered through **Windows Update** as "Intel Corporation - SoftwareComponent - 4.1025.207.1". When the TLS handshake starts, it clears the IPv6 flow label. The author explains that this breaks ECMP in large cloud networks, because the flow is "randomly send to different backend device after tcp handshake". The post includes a `curl -6` reproduction against an Azure endpoint, and stopping the service fixes it.
-- Intel moved the thread to another forum and asked for details. When there was no answer, it closed the inquiry: *"As I haven't received a response, I will proceed to close this inquiry."*
-- Later replies from other organizations report the same symptom: **M365 Search and SharePoint fail with `ERR_CONNECTION_RESET`** on IPv6, and disabling the Intel service fixes it. One adds that removing the software *"took just one Windows Update and the problem was back"*.
+- On an HP ZBook Firefly 14 G11, the author identifies Intel Connectivity Performance Suite, delivered through **Windows Update** as "Intel Corporation - SoftwareComponent - 4.1025.207.1". When the TLS handshake starts, it clears the IPv6 flow label. The author explains that this breaks ECMP in large cloud networks, because the flow is "randomly send to different backend device after tcp handshake". The post includes a `curl -6` reproduction against an Azure endpoint, and stopping the service fixes it.
+- Intel asked for details, then closed the inquiry, on 2025-09-22 and again on 2025-11-12: *"As I haven't received a response, I will proceed to close this inquiry."*
+- In June 2026 other organizations added the same symptom to the thread: **M365 Search and SharePoint fail with `ERR_CONNECTION_RESET`** on IPv6, on [HP EliteBook X Flip G1i and EliteBook 8 G1i](https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/m-p/1750798) laptops, and disabling the Intel service fixes it. One adds that removing the software *"[took just one Windows Update and the problem was back](https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/m-p/1750920)"*.
 
-The author re-posted when the first thread was lost: [second thread, November 2025](https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/m-p/1727313).
+## The July 2026 report
+
+**[Intel Connectivity Performance Suite causes intermittent IPv6](https://community.intel.com/t5/Wireless/Intel-Connectivity-Performance-Suite-causes-intermittent-IPv6/td-p/1754394)**: on an ASUS Vivobook S 14 with Intel Wi-Fi 7 BE201 and ICPS 40.25.725.165, 40–60% of IPv6 connections to AWS CloudFront were reset, and none after removing ICPS. Intel replied that it had "no confirmed public advisory for this specific behavior" and suggested trying another version.
+
+More reports, by laptop maker: [Not only Samsung](affected-oems.md).
 
 ## Earlier reports of the same pattern (Killer / Intel connectivity software)
 
@@ -37,4 +41,4 @@ The reports above are summarized from the linked public pages. The November 2025
 
 ## Why it matters
 
-Intel had the mechanism in writing eleven months before this report and closed the thread. Users have been told to blame their ISP, reinstall Office or pay for technicians. Windows Update keeps putting the software back after people remove it.
+Intel had the mechanism in writing more than a year before this report and closed the thread twice. Users have been told to blame their ISP, reinstall Office or pay for technicians. Windows Update keeps putting the software back after people remove it.

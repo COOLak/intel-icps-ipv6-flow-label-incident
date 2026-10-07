@@ -26,6 +26,7 @@
   <a href="owner-action.html">Vendor asks</a>
   <a href="vendor-reports.html">Report status</a>
   <a href="timeline.html">Timeline</a>
+  <a href="affected-oems.html">Not only Samsung</a>
   <a href="prior-reports.html">Prior reports</a>
   <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
 </nav>
@@ -33,17 +34,22 @@
 <p class="kicker">Incident report · Intel · Microsoft · Samsung</p>
 <h1>A preinstalled Intel driver is silently breaking IPv6, OneNote and Microsoft 365</h1>
 <p class="lede">Intel Connectivity Performance Suite rewrites the IPv6 Flow Label to zero partway through every TCP connection. Microsoft's edge routes on that label, so the rest of each connection lands on a server that never saw it start, and gets reset. OneNote stopped syncing for nearly three weeks, and the cause was nowhere a normal user or support desk would look.</p>
-<p><span class="status">No vendor fix yet</span> <span class="pill">Root cause confirmed</span> <span class="pill">Workaround available</span> <span class="pill">Updated 2026-10-02</span></p>
+<p><span class="status">Fixed by Intel, still shipped broken by OEMs via Windows Update</span> <span class="pill">Reproduced 2026-10-07</span> <span class="pill">Workaround available</span> <span class="pill">Updated 2026-10-07</span></p>
 
 <section class="panel warning">
-  <h2>Intel was told in November 2025, and closed the thread</h2>
-  <p>An engineer posted this exact mechanism on Intel's own forum eleven months ago: the Intel connectivity service clears the IPv6 flow label and breaks cloud load balancing. Intel sent a questionnaire, then closed the inquiry for lack of a response. Other organizations have since reported Microsoft 365 and SharePoint resets in the same thread. One says Windows Update reinstalled the software after they removed it. Similar Killer-era reports go back to 2021. <a href="prior-reports.html">Read the prior reports</a>.</p>
+  <h2>Windows Update shipped the broken builds, and Intel's fix isn't reaching people</h2>
+  <p>On 2026-10-07 the failure was reproduced on demand, and Intel's own generic ICPS 50.26.623.243 was tested on the same laptop: it does <strong>not</strong> zero the flow label. The broken OEM build reached that laptop through <strong>Windows Update</strong>, three times in 2026. Microsoft's Update Catalog lists the builds reported as broken under <strong>Samsung, Lenovo, VAIO, ASUS, HP, Dynabook and Huaqin</strong>. Of 1,086 ICPS entries from 19 companies, only one is the fixed build. Intel's release notes don't mention the fix, and there is no advisory. <a href="affected-oems.html">Who ships the affected builds</a> · <a href="technical-analysis.html#october-7-reproduced-again-and-intels-generic-build-does-not-have-the-bug">The October 7 test</a>.</p>
+</section>
+
+<section class="panel warning">
+  <h2>Intel was told in September 2025, and closed the thread twice</h2>
+  <p>An engineer with an HP laptop posted this exact mechanism on Intel's own forum more than a year ago: the Intel connectivity service clears the IPv6 flow label and breaks cloud load balancing. Intel closed the inquiry for lack of a response, the engineer re-posted in November, and Intel closed it again. Organizations running HP EliteBooks have since reported Microsoft 365 and SharePoint resets in the same thread. One says Windows Update reinstalled the software after they removed it. Similar Killer-era reports go back to 2021. <a href="prior-reports.html">Read the prior reports</a>.</p>
 </section>
 
 <div class="grid">
-  <div class="card"><h2>Flow label kept, ICPS running</h2><div class="metric">0 / 42</div><p class="muted">post-handshake packets on the wire</p></div>
-  <div class="card"><h2>Flow label kept, ICPS stopped</h2><div class="metric">65 / 65</div><p class="muted">same test, driver disabled</p></div>
-  <div class="card"><h2>IPv6 connections that survived</h2><div class="metric">4 → 10 / 10</div><p class="muted">before and after disabling the driver</p></div>
+  <div class="card"><h2>IPv6 connections OK, OEM build</h2><div class="metric">138 / 170</div><p class="muted">34 sites, ICPS 40.25.926.0 running (Oct 7)</p></div>
+  <div class="card"><h2>IPv6 connections OK, Intel generic build</h2><div class="metric">169 / 170</div><p class="muted">same laptop, ICPS 50.26.623.243 (Oct 7)</p></div>
+  <div class="card"><h2>Packets with the flow label zeroed</h2><div class="metric">1,385 → 0</div><p class="muted">OEM build vs. generic build</p></div>
   <div class="card"><h2>OneNote desktop sync</h2><div class="metric">~3 weeks</div><p class="muted">broken, with empty notebooks shown as "Up to date"</p></div>
 </div>
 
@@ -58,9 +64,9 @@
 
 <h2>Three companies, three failures</h2>
 <div class="grid">
-  <div class="card warning"><h3>Intel</h3><p>Ships a kernel driver that breaks a basic IPv6 rule on every connection. It reports nothing, so the owner can't see it.</p></div>
-  <div class="card warning"><h3>Samsung</h3><p>Preinstalled it. The owner never chose it, and none of Samsung's tools detect or mention it.</p></div>
-  <div class="card warning"><h3>Microsoft</h3><p>Its edge falls over on it, where Google, Cloudflare and Akamai don't. OneNote then shows a dead connection as "Up to date". An escalated support case opened in August never found the cause.</p></div>
+  <div class="card warning"><h3>Intel</h3><p>Shipped a kernel driver that breaks a basic IPv6 rule on every connection, then fixed it silently: no advisory, nothing in the release notes. The broken builds keep reaching laptops through OEM packages, and its forum told users to uninstall.</p></div>
+  <div class="card warning"><h3>Samsung (and other OEMs)</h3><p>Preinstalled it and published the broken build on Windows Update. Samsung's one fixed submission targets other device IDs. Lenovo, VAIO, ASUS, HP and Dynabook publish broken builds too.</p></div>
+  <div class="card warning"><h3>Microsoft</h3><p>Signed the broken driver and delivered it through Windows Update. Its own edge then falls over on it, where Google, Cloudflare and Akamai don't. OneNote shows the dead connection as "Up to date", and an escalated support case opened in August never found the cause.</p></div>
 </div>
 <p><a href="owner-action.html">Read the specific asks for each vendor</a>.</p>
 
@@ -70,12 +76,13 @@
 <h2>Reported to</h2>
 <div class="links">
   <a href="https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647">Intel Community</a>
+  <a href="https://us.community.samsung.com/t5/Computers/Galaxy-Book-ships-Intel-software-that-breaks-IPv6-networking-and/m-p/3679834">Samsung Community</a>
   <a href="https://aka.ms/AA13q37q">Feedback Hub: OneNote</a>
   <a href="https://aka.ms/AA13q37r">Feedback Hub: Windows networking</a>
   <a href="https://feedbackportal.microsoft.com/feedback/idea/dd326ebc-9da1-f111-85ce-7c1e529382f4">Microsoft Feedback Portal</a>
   <a href="https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo">Microsoft Q&amp;A</a>
 </div>
-<p class="muted">Plus private Intel and Microsoft support cases. Samsung's community board hid the Samsung report as spam. <a href="vendor-reports.html">Status of every report</a>.</p>
+<p class="muted">Plus private Intel, Microsoft and Samsung support cases. Samsung's community board hid the Samsung report as spam until a moderator restored it. <a href="vendor-reports.html">Status of every report</a>.</p>
 
 <h2>Seeing this too?</h2>
 <p>Add your laptop model, ICPS version and Windows build to the <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident/issues/1">tracking issue</a>. Don't post IP addresses, email addresses or ticket numbers.</p>

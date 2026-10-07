@@ -1,67 +1,230 @@
 {
-  "schema": "incident-state/v1",
-  "incident": "Intel Connectivity Performance Suite zeroes IPv6 Flow Label mid-connection",
-  "updated": "2026-10-02",
-  "status": "root_cause_confirmed_workaround_available_no_vendor_fix",
-  "component": {
-    "product": "Intel Connectivity Performance Suite",
-    "version": "40.25.926.0",
-    "driver": "IntcCo11X64.sys",
-    "driver_version": "11.5.11.19",
-    "driver_service": "INTCCoSvc",
-    "wfp_provider": "Rivet Networks, LLC - RFE version 6.1.0.1",
-    "callouts": [
-      {"name": "IpV6 Egress Transport Callout", "layer": "FWPM_LAYER_OUTBOUND_TRANSPORT_V6", "flags": ["FWP_CALLOUT_FLAG_CONDITIONAL_ON_FLOW"]},
-      {"name": "IpV6 Ingress Network Outbound Callout", "layer": "FWPM_LAYER_OUTBOUND_IPPACKET_V6"}
-    ],
-    "related_services": ["IDBWM", "Intel Connectivity Network Service", "IntelConnectService"]
-  },
-  "environment": {
-    "device": "Samsung Galaxy Book 960QHA",
-    "cpu": "Intel Core Ultra 7 256V",
-    "wifi": "Intel Wi-Fi 7 BE201 (driver 23.160.0.4)",
-    "os": "Windows 11 Pro 26H2 build 26300.9457",
-    "onenote": "16.0.20430.20092",
-    "network": "native IPv6",
-    "affected_endpoint": "Azure Front Door anycast 2620:1ec:50::11 (ln-0001.ln-msedge.net)"
-  },
-  "evidence": {
-    "wire_flow_label_kept": {"SYN": "24/24", "FIN": "11/11", "ACK_data": "0/42"},
-    "rst_hop_limit": 49,
-    "synack_hop_limit": 47,
-    "ab_test": [
-      {"condition": "baseline", "ipv6_connections_ok": "4/10", "ack_data_label_kept": "0/42"},
-      {"condition": "IDBWM stopped", "ipv6_connections_ok": "1/10", "ack_data_label_kept": "0/18"},
-      {"condition": "INTCCoSvc and ICPS services stopped", "ipv6_connections_ok": "10/10", "ack_data_label_kept": "65/65"},
-      {"condition": "final, ICPS disabled", "ipv6_connections_ok": "10/10", "ack_data_label_kept": "73/73"}
-    ],
-    "ruled_out": ["AdGuard WFP driver", "AdGuard VPN WFP driver", "NetLimiter 5 driver"],
-    "ipv4_affected": false
-  },
-  "impact": {
-    "onenote_sync_broken_since": "2026-09-12T20:59:00Z",
-    "onenote_restored": "2026-10-02",
-    "symptoms": ["OneNote: We can't get to your notebooks right now", "OneNote: empty notebooks shown as Up to date", "ERR_CONNECTION_RESET on Microsoft 365 sign-in and other sites"]
-  },
-  "reports": {
-    "intel": [
-      {"channel": "Intel Community", "url": "https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647", "public": true, "date": "2026-10-02"},
-      {"channel": "Intel Customer Support case", "public": false, "date": "2026-10-02", "state": "acknowledged"}
-    ],
-    "microsoft": [
-      {"channel": "Feedback Hub (OneNote)", "url": "https://aka.ms/AA13q37q", "public": true, "date": "2026-10-02"},
-      {"channel": "Feedback Hub (Windows networking)", "url": "https://aka.ms/AA13q37r", "public": true, "date": "2026-10-02"},
-      {"channel": "Feedback Portal idea", "url": "https://feedbackportal.microsoft.com/feedback/idea/dd326ebc-9da1-f111-85ce-7c1e529382f4", "public": true, "date": "2026-08-27", "root_cause_added": "2026-10-02"},
-      {"channel": "Microsoft Q&A", "url": "https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo", "public": true, "date": "2026-10-02"},
-      {"channel": "Microsoft Support case", "public": false, "opened": "2026-08-27", "root_cause_sent": "2026-10-02"}
-    ],
-    "samsung": [
-      {"channel": "Samsung Community US", "public": true, "state": "posted_then_hidden_as_spam"},
-      {"channel": "Samsung Care support case (live chat)", "public": false, "date": "2026-10-02", "state": "opened_escalation_requested"}
-    ],
-    "other": []
-  },
-  "vendor_fix": null,
-  "workaround": "Disable INTCCoSvc, IDBWM, Intel Connectivity Network Service and IntelConnectService",
-  "diagnosed_by": "Anthropic Claude (agent on the affected machine), after OpenAI Codex abandoned the investigation"
+    "schema":  "incident-state/v1",
+    "incident":  "Intel Connectivity Performance Suite zeroes IPv6 Flow Label mid-connection",
+    "updated":  "2026-10-07",
+    "status":  "root_cause_confirmed_reproduced_fixed_in_intel_generic_build_broken_oem_builds_still_on_windows_update",
+    "component":  {
+                      "product":  "Intel Connectivity Performance Suite",
+                      "version":  "40.25.926.0",
+                      "driver":  "IntcCo11X64.sys",
+                      "driver_version":  "11.5.11.19",
+                      "driver_service":  "INTCCoSvc",
+                      "wfp_provider":  "Rivet Networks, LLC - RFE version 6.1.0.1",
+                      "callouts":  [
+                                       {
+                                           "name":  "IpV6 Egress Transport Callout",
+                                           "layer":  "FWPM_LAYER_OUTBOUND_TRANSPORT_V6",
+                                           "flags":  [
+                                                         "FWP_CALLOUT_FLAG_CONDITIONAL_ON_FLOW"
+                                                     ]
+                                       },
+                                       {
+                                           "name":  "IpV6 Ingress Network Outbound Callout",
+                                           "layer":  "FWPM_LAYER_OUTBOUND_IPPACKET_V6"
+                                       }
+                                   ],
+                      "related_services":  [
+                                               "IDBWM",
+                                               "Intel Connectivity Network Service",
+                                               "IntelConnectService"
+                                           ]
+                  },
+    "environment":  {
+                        "device":  "Samsung Galaxy Book 960QHA",
+                        "cpu":  "Intel Core Ultra 7 256V",
+                        "wifi":  "Intel Wi-Fi 7 BE201 (driver 23.160.0.4)",
+                        "os":  "Windows 11 Pro 26H2 build 26300.9457",
+                        "onenote":  "16.0.20430.20092",
+                        "network":  "native IPv6",
+                        "affected_endpoint":  "Azure Front Door anycast 2620:1ec:50::11 (ln-0001.ln-msedge.net)"
+                    },
+    "evidence":  {
+                     "wire_flow_label_kept":  {
+                                                  "SYN":  "24/24",
+                                                  "FIN":  "11/11",
+                                                  "ACK_data":  "0/42"
+                                              },
+                     "rst_hop_limit":  49,
+                     "synack_hop_limit":  47,
+                     "ab_test":  [
+                                     {
+                                         "condition":  "baseline",
+                                         "ipv6_connections_ok":  "4/10",
+                                         "ack_data_label_kept":  "0/42"
+                                     },
+                                     {
+                                         "condition":  "IDBWM stopped",
+                                         "ipv6_connections_ok":  "1/10",
+                                         "ack_data_label_kept":  "0/18"
+                                     },
+                                     {
+                                         "condition":  "INTCCoSvc and ICPS services stopped",
+                                         "ipv6_connections_ok":  "10/10",
+                                         "ack_data_label_kept":  "65/65"
+                                     },
+                                     {
+                                         "condition":  "final, ICPS disabled",
+                                         "ipv6_connections_ok":  "10/10",
+                                         "ack_data_label_kept":  "73/73"
+                                     }
+                                 ],
+                     "ruled_out":  [
+                                       "AdGuard WFP driver",
+                                       "AdGuard VPN WFP driver",
+                                       "NetLimiter 5 driver"
+                                   ],
+                     "ipv4_affected":  false,
+                     "retest_2026_10_07":  {
+                                               "method":  "34 sites x 5 IPv6 connections, header-only pktmon at the Wi-Fi miniport, IPv4 control",
+                                               "steps":  [
+                                                             {
+                                                                 "step":  "A",
+                                                                 "icps":  "OEM 40.25.926.0 disabled",
+                                                                 "ipv6_ok":  "168/170",
+                                                                 "ack_data_label_kept":  "3779/3779"
+                                                             },
+                                                             {
+                                                                 "step":  "B",
+                                                                 "icps":  "OEM 40.25.926.0 running, driver 11.5.11.19",
+                                                                 "ipv6_ok":  "138/170",
+                                                                 "ack_data_label_kept":  "8457/9842",
+                                                                 "onedrive_edge_label_kept":  "0/60"
+                                                             },
+                                                             {
+                                                                 "step":  "C",
+                                                                 "icps":  "OEM disabled again",
+                                                                 "ipv6_ok":  "169/170",
+                                                                 "ack_data_label_kept":  "4240/4240"
+                                                             },
+                                                             {
+                                                                 "step":  "N",
+                                                                 "icps":  "none (removed, rebooted)",
+                                                                 "ipv6_ok":  "168/170",
+                                                                 "ack_data_label_kept":  "4230/4230"
+                                                             },
+                                                             {
+                                                                 "step":  "G",
+                                                                 "icps":  "Intel generic 50.26.623.243 running, driver 12.10.14.33",
+                                                                 "ipv6_ok":  "169/170",
+                                                                 "ack_data_label_kept":  "11711/11711",
+                                                                 "onedrive_edge_label_kept":  "201/201"
+                                                             }
+                                                         ],
+                                               "failing_in_B":  [
+                                                                    "d.docs.live.net 1/5",
+                                                                    "api.onedrive.com 1/5",
+                                                                    "www.office.com 3/5",
+                                                                    "teams.microsoft.com 4/5",
+                                                                    "www.skype.com 2/5",
+                                                                    "portal.azure.com 0/5",
+                                                                    "dev.azure.com 2/5",
+                                                                    "marketplace.visualstudio.com 0/5"
+                                                                ]
+                                           }
+                 },
+    "impact":  {
+                   "onenote_sync_broken_since":  "2026-09-12T20:59:00Z",
+                   "onenote_restored":  "2026-10-02",
+                   "symptoms":  [
+                                    "OneNote: We can\u0027t get to your notebooks right now",
+                                    "OneNote: empty notebooks shown as Up to date",
+                                    "ERR_CONNECTION_RESET on Microsoft 365 sign-in and other sites"
+                                ]
+               },
+    "reports":  {
+                    "intel":  [
+                                  {
+                                      "channel":  "Intel Community",
+                                      "url":  "https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647",
+                                      "public":  true,
+                                      "date":  "2026-10-02"
+                                  },
+                                  {
+                                      "channel":  "Intel Customer Support case",
+                                      "public":  false,
+                                      "date":  "2026-10-02",
+                                      "state":  "generic_build_test_results_sent_2026-10-07"
+                                  }
+                              ],
+                    "microsoft":  [
+                                      {
+                                          "channel":  "Feedback Hub (OneNote)",
+                                          "url":  "https://aka.ms/AA13q37q",
+                                          "public":  true,
+                                          "date":  "2026-10-02"
+                                      },
+                                      {
+                                          "channel":  "Feedback Hub (Windows networking)",
+                                          "url":  "https://aka.ms/AA13q37r",
+                                          "public":  true,
+                                          "date":  "2026-10-02"
+                                      },
+                                      {
+                                          "channel":  "Feedback Portal idea",
+                                          "url":  "https://feedbackportal.microsoft.com/feedback/idea/dd326ebc-9da1-f111-85ce-7c1e529382f4",
+                                          "public":  true,
+                                          "date":  "2026-08-27",
+                                          "root_cause_added":  "2026-10-02"
+                                      },
+                                      {
+                                          "channel":  "Microsoft Q\u0026A",
+                                          "url":  "https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo",
+                                          "public":  true,
+                                          "date":  "2026-10-02"
+                                      },
+                                      {
+                                          "channel":  "Microsoft Support case",
+                                          "public":  false,
+                                          "opened":  "2026-08-27",
+                                          "root_cause_sent":  "2026-10-02",
+                                          "escalation_requested":  "2026-10-07"
+                                      }
+                                  ],
+                    "samsung":  [
+                                    {
+                                        "channel":  "Samsung Community US",
+                                        "public":  true,
+                                        "state":  "posted_hidden_as_spam_then_restored_by_moderator",
+                                        "url":  "https://us.community.samsung.com/t5/Computers/Galaxy-Book-ships-Intel-software-that-breaks-IPv6-networking-and/m-p/3679834"
+                                    },
+                                    {
+                                        "channel":  "Samsung Care support case (live chat)",
+                                        "public":  false,
+                                        "date":  "2026-10-02",
+                                        "state":  "opened_escalation_requested"
+                                    }
+                                ],
+                    "other":  [
+
+                              ]
+                },
+    "vendor_fix":  {
+                       "intel_generic_build_without_bug":  "ICPS 50.26.623.243",
+                       "driver":  "IntcCo11X64.sys 12.10.14.33",
+                       "tested":  "2026-10-07",
+                       "release_notes_mention_fix":  false,
+                       "advisory":  null,
+                       "catalog_entries_of_fixed_build":  1,
+                       "catalog_submitter":  "Samsung (Windows 11 25H2, SID_1001/1002 only; affected laptop is SID_0001)"
+                   },
+    "workaround":  "Disable INTCCoSvc, IDBWM, Intel Connectivity Network Service and IntelConnectService, or replace the OEM build with Intel generic ICPS 50.26.623.243",
+    "diagnosed_by":  "Anthropic Claude (agent on the affected machine), after OpenAI Codex abandoned the investigation",
+    "distribution":  {
+                         "windows_update_installs_on_affected_laptop":  [
+                                                                            "2025-05-06 ICPSExtension+ICPSComponent 4.1025.304.2",
+                                                                            "2026-05-09 ICPSExtension 40.25.926.173",
+                                                                            "2026-05-14 ICPSComponent 40.25.926.173",
+                                                                            "2026-06-13 ICPSExtension 40.25.926.173"
+                                                                        ],
+                         "source":  "setupapi.dev.log, Install Windows Update driver sections, wuaucltcore.exe",
+                         "catalog_icps_entries":  1086,
+                         "catalog_versions":  47,
+                         "catalog_companies":  19,
+                         "reported_broken_builds":  {
+                                                        "4.1025.207.1":  "HP 6, Dynabook 2",
+                                                        "40.25.725.165":  "ASUS 30, HP 3, Lenovo 3, VAIO 3",
+                                                        "40.25.926.173":  "Lenovo 12, VAIO 4, Huaqin 4, Samsung 3"
+                                                    },
+                         "details":  "affected-oems.md"
+                     }
 }

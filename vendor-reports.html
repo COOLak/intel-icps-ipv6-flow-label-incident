@@ -22,11 +22,12 @@
   <a href="owner-action.html">Vendor asks</a>
   <a href="vendor-reports.html">Report status</a>
   <a href="timeline.html">Timeline</a>
+  <a href="affected-oems.html">Not only Samsung</a>
   <a href="prior-reports.html">Prior reports</a>
   <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
 </nav>
 <div class="markdown-heading"><h1 class="heading-element">Vendor reports and status</h1><a id="user-content-vendor-reports-and-status" class="anchor" aria-label="Permalink: Vendor reports and status" href="#vendor-reports-and-status"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
-<p>Last updated: <strong>2026-10-02</strong>. "Filed" means submitted or published. It does not mean a vendor has acknowledged, reproduced or fixed anything.</p>
+<p>Last updated: <strong>2026-10-07</strong>. "Filed" means submitted or published. It does not mean a vendor has acknowledged, reproduced or fixed anything.</p>
 <div class="markdown-heading"><h2 class="heading-element">Intel</h2><a id="user-content-intel" class="anchor" aria-label="Permalink: Intel" href="#intel"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
 <table>
 <thead>
@@ -40,12 +41,12 @@
 <tr>
 <td><a href="https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647" rel="nofollow">Intel Community, Wireless board</a></td>
 <td>Public</td>
-<td>Posted 2026-10-02. Awaiting an Intel response.</td>
+<td>Posted 2026-10-02.</td>
 </tr>
 <tr>
 <td>Intel Customer Support case</td>
 <td>Private</td>
-<td>Opened 2026-10-02. Intel's acknowledgement email received. Awaiting engineering response.</td>
+<td>Opened 2026-10-02. On 2026-10-06 Intel asked for a test with its generic ICPS package. Results sent 2026-10-07: the generic 50.26.623.243 does not have the bug. Asked Intel which version fixed it, to get the fix to OEMs and Windows Update, and to publish an advisory. Awaiting answer.</td>
 </tr>
 </tbody>
 </table>
@@ -82,7 +83,7 @@
 <tr>
 <td>Microsoft Support case</td>
 <td>Private</td>
-<td>Opened 2026-08-27 and escalated toward OneNote engineering. It never found the cause. Full root cause sent into the case on 2026-10-02.</td>
+<td>Opened 2026-08-27 and escalated to OneNote engineering. It never found the cause, and Microsoft has not replied since. Full root cause sent 2026-10-02. On 2026-10-07, asked for a case owner and escalation to the Windows Update driver-distribution team and Azure Front Door. Awaiting answer.</td>
 </tr>
 </tbody>
 </table>
@@ -97,22 +98,23 @@
 </thead>
 <tbody>
 <tr>
-<td>Samsung Community US, Computers board</td>
+<td><a href="https://us.community.samsung.com/t5/Computers/Galaxy-Book-ships-Intel-software-that-breaks-IPv6-networking-and/m-p/3679834" rel="nofollow">Samsung Community US, Computers board</a></td>
 <td>Public</td>
-<td>Posted 2026-10-02, then hidden by Samsung's spam filter.</td>
+<td>Posted 2026-10-02, hidden by Samsung's spam filter, restored by a moderator.</td>
 </tr>
 <tr>
 <td>Samsung Care live chat (Laptop Department)</td>
 <td>Private</td>
-<td>Case opened 2026-10-02 and noted for escalation to Galaxy Book software engineering. Awaiting follow-up.</td>
+<td>Case opened 2026-10-02 and noted for escalation to Galaxy Book software engineering. No follow-up from Samsung.</td>
 </tr>
 </tbody>
 </table>
 <div class="markdown-heading"><h2 class="heading-element">Not yet received</h2><a id="user-content-not-yet-received" class="anchor" aria-label="Permalink: Not yet received" href="#not-yet-received"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
 <ul>
 <li>Any vendor confirmation that the defect has been reproduced.</li>
-<li>A fixed ICPS driver, an Intel advisory, or a Samsung Update change.</li>
-<li>Any Microsoft statement on WFP flow-label preservation or edge tolerance.</li>
+<li>An Intel advisory, or a statement of which ICPS version fixed the flow-label behavior.</li>
+<li>A Samsung, Lenovo, ASUS, HP, VAIO or Dynabook update that replaces the broken builds on Windows Update.</li>
+<li>Any Microsoft statement on Windows Update distribution, WFP flow-label preservation or edge tolerance.</li>
 </ul>
 <footer>Privacy-sanitized public evidence. Private correspondence, account identifiers, ticket numbers and the machine's IP addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to overview</a></footer>
 </main></body>

@@ -22,6 +22,7 @@
   <a href="owner-action.html">Vendor asks</a>
   <a href="vendor-reports.html">Report status</a>
   <a href="timeline.html">Timeline</a>
+  <a href="affected-oems.html">Not only Samsung</a>
   <a href="prior-reports.html">Prior reports</a>
   <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
 </nav>
@@ -43,7 +44,7 @@
 </ul>
 </li>
 <li>Native IPv6 from the ISP.</li>
-<li>Microsoft endpoint: Azure Front Door anycast <code>2620:1ec:50::11</code> / <code>150.171.22.11</code> (<code>ln-0001.ln-msedge.net</code>), serving <code>d.docs.live.net</code>, <code>docs.live.net</code> and <code>api.onedrive.com</code>.</li>
+<li>Microsoft endpoint: Azure Front Door anycast <code>2620:1ec:50::11</code> / <code>150.171.22.11</code> (<code>ln-0001.ln-msedge.net</code>, the nearest Microsoft edge), serving <code>d.docs.live.net</code>, <code>docs.live.net</code> and <code>api.onedrive.com</code>.</li>
 </ul>
 <div class="markdown-heading"><h2 class="heading-element">Symptoms</h2><a id="user-content-symptoms" class="anchor" aria-label="Permalink: Symptoms" href="#symptoms"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
 <ul>
@@ -144,6 +145,168 @@
 <li>Microsoft 365 sign-in loads in Chromium browsers.</li>
 <li>10/10 IPv6 connections succeed, and every packet keeps its flow label.</li>
 </ul>
+<div class="markdown-heading"><h2 class="heading-element">October 7: reproduced again, and Intel's generic build does not have the bug</h2><a id="user-content-october-7-reproduced-again-and-intels-generic-build-does-not-have-the-bug" class="anchor" aria-label="Permalink: October 7: reproduced again, and Intel's generic build does not have the bug" href="#october-7-reproduced-again-and-intels-generic-build-does-not-have-the-bug"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Intel Customer Support asked for a test with Intel's own generic ICPS instead of the OEM package. Before that, the original result was reproduced once more on the same laptop. Each step below made 5 IPv6 connections to each of 34 websites (170 in total), with header-only <code>pktmon</code> captures at the Wi-Fi miniport and an IPv4 control.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>ICPS</th>
+<th>Traffic-control driver</th>
+<th>IPv6 connections OK</th>
+<th>Post-handshake packets keeping their flow label</th>
+<th>To the OneDrive/OneNote edge (<code>2620:1ec:50::11</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>OEM 40.25.926.0 installed, disabled</td>
+<td>stopped</td>
+<td>168/170</td>
+<td>3779/3779</td>
+<td>all kept</td>
+</tr>
+<tr>
+<td>B</td>
+<td><strong>OEM 40.25.926.0 re-enabled</strong></td>
+<td>
+<code>IntcCo11X64.sys</code> <strong>11.5.11.19</strong>
+</td>
+<td><strong>138/170</strong></td>
+<td>
+<strong>8457/9842</strong> (1385 set to 0)</td>
+<td><strong>0/60</strong></td>
+</tr>
+<tr>
+<td>C</td>
+<td>OEM disabled again</td>
+<td>stopped</td>
+<td>169/170</td>
+<td>4240/4240</td>
+<td>all kept</td>
+</tr>
+<tr>
+<td>N</td>
+<td>OEM removed (Intel article 000093451 method), reboot</td>
+<td>none</td>
+<td>168/170</td>
+<td>4230/4230</td>
+<td>all kept</td>
+</tr>
+<tr>
+<td>G</td>
+<td>
+<strong>Intel generic 50.26.623.243</strong> installed and running</td>
+<td>
+<code>IntcCo11X64.sys</code> <strong>12.10.14.33</strong>
+</td>
+<td><strong>169/170</strong></td>
+<td><strong>11711/11711</strong></td>
+<td><strong>201/201</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The single miss in steps A, C, N and G is <code>www.microsoft.com</code> (Akamai) timing out, which also happens over IPv4 and is unrelated.</p>
+<p><strong>With the OEM build running (step B), these failed over IPv6 and worked over IPv4 at the same moment:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Host</th>
+<th>IPv6 OK in B</th>
+<th>In A, C, N and G</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OneNote / OneDrive sync</td>
+<td><code>d.docs.live.net</code></td>
+<td>1/5</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>OneDrive</td>
+<td><code>api.onedrive.com</code></td>
+<td>1/5</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Microsoft 365 / Office</td>
+<td><code>www.office.com</code></td>
+<td>3/5</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Microsoft Teams</td>
+<td><code>teams.microsoft.com</code></td>
+<td>4/5</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Skype</td>
+<td><code>www.skype.com</code></td>
+<td>2/5</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Azure portal</td>
+<td><code>portal.azure.com</code></td>
+<td><strong>0/5</strong></td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Azure DevOps</td>
+<td><code>dev.azure.com</code></td>
+<td>2/5</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Visual Studio Marketplace</td>
+<td><code>marketplace.visualstudio.com</code></td>
+<td><strong>0/5</strong></td>
+<td>5/5</td>
+</tr>
+</tbody>
+</table>
+<p>In step B the OEM driver zeroed the label on traffic to <strong>every</strong> destination, Google, Cloudflare and Wikipedia included. Only services whose load balancers hash on the label actually reset the connections.</p>
+<p><strong>The generic build hooks the same places.</strong> In step G, twelve Rivet/RFE filters were active, including <code>Rivet IpV6 Outbound Transport Filtering Layer</code> → <code>IpV6 Egress Transport Callout</code>. In step N there were none. The newer driver processes the same packets without zeroing the label. Intel's release notes for 50.26.623.243 and 50.26.220.212 don't mention a fix.</p>
+<p><strong>Windows Update delivered the broken build.</strong> Windows' own driver setup log (<code>setupapi.dev.log</code>) records every ICPS install on this laptop as an "Install Windows Update driver" operation run by the Windows Update client (<code>wuaucltcore.exe</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Date (UTC)</th>
+<th>Package</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-05-06</td>
+<td>
+<code>ICPSExtension.inf</code> and <code>ICPSComponent.inf</code>
+</td>
+<td>4.1025.304.2</td>
+</tr>
+<tr>
+<td>2026-05-09</td>
+<td><code>ICPSExtension.inf</code></td>
+<td><strong>40.25.926.173</strong></td>
+</tr>
+<tr>
+<td>2026-05-14</td>
+<td><code>ICPSComponent.inf</code></td>
+<td><strong>40.25.926.173</strong></td>
+</tr>
+<tr>
+<td>2026-06-13</td>
+<td>
+<code>ICPSExtension.inf</code>, again</td>
+<td><strong>40.25.926.173</strong></td>
+</tr>
+</tbody>
+</table>
+<p>After the generic 50.26.623.243 was installed, a Windows Update driver scan on 2026-10-07 offered no driver updates, so Windows Update did not try to replace the newer build with the older one.</p>
 <div class="markdown-heading"><h2 class="heading-element">Method</h2><a id="user-content-method" class="anchor" aria-label="Permalink: Method" href="#method"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
 <p>The investigation was run by Anthropic's Claude as an agent on the affected machine, after OpenAI's Codex had abandoned the same problem. It used:</p>
 <ul>

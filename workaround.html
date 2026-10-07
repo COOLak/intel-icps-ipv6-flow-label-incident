@@ -22,6 +22,7 @@
   <a href="owner-action.html">Vendor asks</a>
   <a href="vendor-reports.html">Report status</a>
   <a href="timeline.html">Timeline</a>
+  <a href="affected-oems.html">Not only Samsung</a>
   <a href="prior-reports.html">Prior reports</a>
   <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
 </nav>
@@ -57,6 +58,15 @@
 <span class="pl-c1">Set-Service</span> <span class="pl-s"><span class="pl-pds">'</span>Intel Connectivity Network Service<span class="pl-pds">'</span></span> <span class="pl-k">-</span>StartupType Automatic
 <span class="pl-c1">Set-Service</span> IntelConnectService <span class="pl-k">-</span>StartupType Manual</pre></div>
 <p>Intel Connectivity Performance Suite only provides Intel's traffic prioritization features. Wi-Fi and Bluetooth keep working without it.</p>
+<div class="markdown-heading"><h2 class="heading-element">4. Or replace the OEM build with Intel's current generic build</h2><a id="user-content-4-or-replace-the-oem-build-with-intels-current-generic-build" class="anchor" aria-label="Permalink: 4. Or replace the OEM build with Intel's current generic build" href="#4-or-replace-the-oem-build-with-intels-current-generic-build"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Tested on 2026-10-07 on the affected laptop: Intel's generic <strong>ICPS 50.26.623.243</strong> (traffic-control driver <code>IntcCo11X64.sys</code> 12.10.14.33) does <strong>not</strong> zero the flow label. With it installed and running, 169 of 170 IPv6 connections succeeded and every packet kept its label. See <a href="technical-analysis.html#october-7-reproduced-again-and-intels-generic-build-does-not-have-the-bug">the test</a>.</p>
+<ol>
+<li>Check which version you have: <code>pnputil /enum-drivers | Select-String icps -Context 1,3</code>. Versions 40.x and 4.1025.x are the OEM builds that showed the bug.</li>
+<li>Remove the OEM build the way Intel's support article <a href="https://www.intel.com/content/www/us/en/support/articles/000093451/wireless/wireless-software.html" rel="nofollow">000093451</a> describes: in an administrator PowerShell, run <code>pnputil /delete-driver oemNN.inf /uninstall</code> for each <code>icpscomponent.inf</code> and then the <code>icpsextension.inf</code> that step 1 listed. Then remove the "Intel Connectivity Performance Suite" app (Settings &gt; Apps) and restart. Your Wi-Fi drops for a moment while the extension is removed. Don't remove any other driver package.</li>
+<li>Download <strong>IntelConnectivityPerformanceSuite-50.26.623.243.exe</strong> from <a href="https://www.intel.com/content/www/us/en/download/738623/intel-connectivity-performance-suite-icps-for-intel-wireless-products-and-intel-connectivity-manager-icm.html" rel="nofollow">Intel's download page</a>, check its SHA-256 against the value Intel lists, and install it.</li>
+<li>Run the test in step 2 above again.</li>
+</ol>
+<p>If Intel's installer reports a failed uninstallation of an old version, Intel's download page points to its ICPS Clean Uninstall Utility.</p>
 <div class="markdown-heading"><h2 class="heading-element">Things that do not help</h2><a id="user-content-things-that-do-not-help" class="anchor" aria-label="Permalink: Things that do not help" href="#things-that-do-not-help"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
 <p>Signing out of Office, clearing the OneNote cache, repairing or reinstalling Office, resetting the network stack and switching DNS do nothing for this. Turning IPv6 off hides the symptom, but it also disables IPv6 for everything else.</p>
 <div class="markdown-heading"><h2 class="heading-element">If you are affected</h2><a id="user-content-if-you-are-affected" class="anchor" aria-label="Permalink: If you are affected" href="#if-you-are-affected"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>

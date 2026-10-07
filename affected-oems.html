@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Not only Samsung: who ships the affected Intel ICPS builds · Intel ICPS IPv6 flow-label incident</title>
+  <meta name="description" content="Microsoft's Update Catalog lists the Intel ICPS builds reported as breaking IPv6 under Samsung, Lenovo, VAIO, ASUS, HP, Dynabook and Huaqin. Only one of 1,086 entries is the fixed build.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/affected-oems.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Intel ICPS IPv6 flow-label incident">
+  <meta property="og:title" content="Not only Samsung: who ships the affected Intel ICPS builds">
+  <meta property="og:description" content="Microsoft's Update Catalog lists the Intel ICPS builds reported as breaking IPv6 under Samsung, Lenovo, VAIO, ASUS, HP, Dynabook and Huaqin. Only one of 1,086 entries is the fixed build.">
+  <meta property="og:url" content="https://coolak.github.io/intel-icps-ipv6-flow-label-incident/affected-oems.html">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body><main>
+<nav class="nav">
+  <a href="./">Overview</a>
+  <a href="workaround.html">Am I affected?</a>
+  <a href="technical-analysis.html">Technical analysis</a>
+  <a href="owner-action.html">Vendor asks</a>
+  <a href="vendor-reports.html">Report status</a>
+  <a href="timeline.html">Timeline</a>
+  <a href="affected-oems.html">Not only Samsung</a>
+  <a href="prior-reports.html">Prior reports</a>
+  <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
+</nav>
+<div class="markdown-heading"><h1 class="heading-element">Not only Samsung: who ships the affected builds</h1><a id="user-content-not-only-samsung-who-ships-the-affected-builds" class="anchor" aria-label="Permalink: Not only Samsung: who ships the affected builds" href="#not-only-samsung-who-ships-the-affected-builds"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<p>Research as of 2026-10-07. Every claim below cites its source. "Catalog" means Microsoft's own <a href="https://www.catalog.update.microsoft.com/Search.aspx?q=pid_icps" rel="nofollow">Update Catalog</a>, which lists the driver packages that partners submit for delivery through Windows Update. The "company" on a Catalog entry is the partner that submitted it.</p>
+<div class="markdown-heading"><h2 class="heading-element">The short version</h2><a id="user-content-the-short-version" class="anchor" aria-label="Permalink: The short version" href="#the-short-version"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>
+<strong>Windows Update carries the builds that users have reported as broken, under seven submitters:</strong> Samsung, Lenovo, VAIO, ASUS, HP, Dynabook and the contract manufacturer Huaqin.</li>
+<li>
+<strong>The Catalog holds 1,086 ICPS entries across 47 versions from 19 companies.</strong> Only <strong>one</strong> entry is the build shown fixed on October 7 (50.26.623.243). It was submitted by Samsung for Windows 11 25H2 and targets device IDs <code>SID_1001/1002</code>. The affected Galaxy Book's ICPS device is <code>SWC\VID_8086&amp;PID_ICPS&amp;SID_0001</code>, so that entry could not reach it.</li>
+<li>
+<strong>Every other company's newest Catalog build is older than 50.26.623.243.</strong> Whether those intermediate builds have the bug is unknown: no one has tested them.</li>
+<li>
+<strong>Independent users report the same IPv6-only resets on HP, ASUS and Lenovo laptops</strong>, and IT admins report that Windows Update puts the software back after they remove it.</li>
+</ul>
+<div class="markdown-heading"><h2 class="heading-element">Builds reported broken, and who publishes them on Windows Update</h2><a id="user-content-builds-reported-broken-and-who-publishes-them-on-windows-update" class="anchor" aria-label="Permalink: Builds reported broken, and who publishes them on Windows Update" href="#builds-reported-broken-and-who-publishes-them-on-windows-update"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<table>
+<thead>
+<tr>
+<th>ICPS build</th>
+<th>Status</th>
+<th>Evidence</th>
+<th>Catalog submitters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.1025.207.1</td>
+<td>Reported broken: the Intel service "clean[s] up ipv6 flow table when ssl handshake started"; Azure DevOps resets. Delivered by Windows Update to an HP ZBook Firefly 14 G11. Intel closed the thread twice without a fix.</td>
+<td>
+<a href="https://community.intel.com/t5/Ethernet-Products/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/td-p/1716740" rel="nofollow">Intel Community, Sept 2025</a>, <a href="https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/td-p/1724647" rel="nofollow">re-post, Nov 2025</a>
+</td>
+<td><a href="https://www.catalog.update.microsoft.com/Search.aspx?q=4.1025.207.1" rel="nofollow">HP (6), Dynabook (2)</a></td>
+</tr>
+<tr>
+<td>40.25.725.165</td>
+<td>Reported broken: 40–60% of IPv6 connections to AWS CloudFront reset on an ASUS Vivobook S 14 S5406SA; none after removing ICPS. Intel: "we do not have a confirmed public advisory for this specific behavior".</td>
+<td>
+<a href="https://community.intel.com/t5/Wireless/Intel-Connectivity-Performance-Suite-causes-intermittent-IPv6/td-p/1754394" rel="nofollow">Intel Community, July 2026</a>, <a href="https://community.intel.com/t5/Wireless/Intel-Connectivity-Performance-Suite-causes-intermittent-IPv6/m-p/1754422" rel="nofollow">Intel's reply</a>
+</td>
+<td><a href="https://www.catalog.update.microsoft.com/Search.aspx?q=40.25.725.165" rel="nofollow">ASUS (30), HP (3), Lenovo (3), VAIO (3)</a></td>
+</tr>
+<tr>
+<td>40.25.926.173 (ICPS 40.25.926.0, driver 11.5.11.19)</td>
+<td>Broken: packet captures and controlled tests on this tracker's Galaxy Book</td>
+<td><a href="technical-analysis.html">Technical analysis</a></td>
+<td><a href="https://www.catalog.update.microsoft.com/Search.aspx?q=40.25.926.173" rel="nofollow">Lenovo (12), VAIO (4), Huaqin (4), Samsung (3)</a></td>
+</tr>
+<tr>
+<td>50.26.623.243 (driver 12.10.14.33)</td>
+<td>
+<strong>Fixed</strong>, in this tracker's October 7 test. Intel's release notes say only "minor fixes that improve performance, stability, and vendor-specific features".</td>
+<td>
+<a href="technical-analysis.html#october-7-reproduced-again-and-intels-generic-build-does-not-have-the-bug">October 7 test</a>, <a href="https://downloadmirror.intel.com/927067/ReleaseNotes_IntelConnectivityPerformanceSuite_50.26.623.243.pdf" rel="nofollow">release notes</a>
+</td>
+<td><a href="https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=e79f0755-ec7f-4cb6-b6e4-ed8fad7096a5" rel="nofollow">Samsung (1), 25H2, SID_1001/1002 only</a></td>
+</tr>
+</tbody>
+</table>
+<div class="markdown-heading"><h2 class="heading-element">By laptop maker</h2><a id="user-content-by-laptop-maker" class="anchor" aria-label="Permalink: By laptop maker" href="#by-laptop-maker"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<table>
+<thead>
+<tr>
+<th>Maker</th>
+<th>Ships ICPS</th>
+<th>Newest build in the Catalog / on the maker's site</th>
+<th>Independent reports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ASUS</td>
+<td>Yes, <a href="https://www.catalog.update.microsoft.com/Search.aspx?q=Connectivity%20Performance%20Suite%20ASUSTeK" rel="nofollow">529 Catalog entries</a>, the most of any company</td>
+<td>50.26.220.212. ASUS's own driver pages still list 40.25.725.165 as newest for the <a href="https://www.asus.com/support/api/product.asmx/GetPDDrivers?cpu=&amp;osid=52&amp;website=global&amp;pdhashedid=&amp;model=UX3405MA" rel="nofollow">Zenbook 14 UX3405MA</a> and <a href="https://www.asus.com/support/api/product.asmx/GetPDDrivers?cpu=&amp;osid=52&amp;website=global&amp;pdhashedid=&amp;model=S5406SA" rel="nofollow">Vivobook S 14 S5406SA</a>
+</td>
+<td>Vivobook S 14 (above). Windows Update <a href="https://github.com/safing/portmaster/issues/2120">reinstalled 40.25.725.165 within about two days</a> on a Zenbook 14 after removal</td>
+</tr>
+<tr>
+<td>HP</td>
+<td>Yes, 130 Catalog entries</td>
+<td>
+<a href="https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=4e072327-653d-4c9f-b390-00d6d9468bf6" rel="nofollow">50.26.401.224</a>. HP's <a href="https://ftp.hp.com/pub/softpaq/sp157501-158000/sp157565.html" rel="nofollow">SoftPaq sp157565</a> ships 4.1025.207.1 for 32 models</td>
+<td>ZBook Firefly 14 G11 (above). An organization with <a href="https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/m-p/1750798" rel="nofollow">EliteBook X Flip G1i and EliteBook 8 G1i</a>: Microsoft 365 Search and SharePoint fail over IPv6. Another EliteBook 8 G1i owner: "<a href="https://community.intel.com/t5/Wireless/Intel-Connectivity-Network-Service-is-causing-the-ipv6-flowtable/m-p/1750920" rel="nofollow">it took just one Windows Update and the problem was back</a>"</td>
+</tr>
+<tr>
+<td>Lenovo</td>
+<td>Yes, 61 Catalog entries, including 12 of the broken 40.25.926.173</td>
+<td>
+<a href="https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=00bb4184-a33a-44da-b696-f741f187f086" rel="nofollow">50.25.1121.193</a> for Windows 11; 40.25.926.173 is still newest for Windows 10. Lenovo's site offers <a href="https://pcsupport.lenovo.com/us/en/downloads/ds570299" rel="nofollow">40.25.829.165</a> for Yoga 7 2-in-1 and Yoga Pro 7</td>
+<td>
+<a href="https://community.brave.app/t/err-connection-reset-errors-on-new-win-11-laptops/637663" rel="nofollow">Several new Lenovo laptops, out of the box</a>: resets fixed by disabling IPv6 or the Intel service. Lenovo separately documents an <a href="https://pcsupport.lenovo.com/us/en/solutions/ht515468" rel="nofollow">ICPS defect that breaks Outlook, Teams and OneDrive with VPNs</a>
+</td>
+</tr>
+<tr>
+<td>VAIO</td>
+<td>Yes, 33 Catalog entries</td>
+<td>
+<a href="https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=11b4b528-c9e5-42b1-9010-8af0b5a20612" rel="nofollow">50.25.1121.193</a>; VAIO's site publishes a <a href="https://support.us.vaio.com/knowledge-base/intel-connectivity-performance-suite-ver-40-25-725-165-update-program/" rel="nofollow">40.25.725.165 update program</a>
+</td>
+<td>None found</td>
+</tr>
+<tr>
+<td>Dynabook</td>
+<td>Yes, 64 Catalog entries</td>
+<td>
+<a href="https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=03ec1b1c-377c-4cd4-ba85-b1ff0c58dce5" rel="nofollow">50.26.522.234</a> for 25H2; <a href="https://www.catalog.update.microsoft.com/Search.aspx?q=40.25.909.171" rel="nofollow">40.25.909.171</a> for 24H2 and Windows 10</td>
+<td>None found</td>
+</tr>
+<tr>
+<td>Samsung</td>
+<td>Yes, 80 Catalog entries</td>
+<td>The one fixed entry (SID_1001/1002, 25H2); <a href="https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=369bcb5f-50b7-4901-bd34-8488d9cb459c" rel="nofollow">50.26.107.203</a> for SID_0001/0002</td>
+<td>This tracker</td>
+</tr>
+<tr>
+<td>Dell</td>
+<td>Yes: "<a href="https://www.dell.com/support/kbdoc/en-us/000275594/how-to-get-support-for-icps-and-icm-on-a-dell-computer" rel="nofollow">ICPS is intended for all Dell laptops that have an Intel CPU</a>"</td>
+<td>No Dell-submitted Catalog entries; version unknown</td>
+<td>None in the ICPS era. The predecessor Killer software caused the same IPv6-only resets on <a href="https://community.intel.com/t5/Wireless/Killer-Network-Service-preventing-connection-to-some-websites/td-p/1366144" rel="nofollow">Alienware and XPS machines in 2021–22</a>
+</td>
+</tr>
+<tr>
+<td>Fujitsu</td>
+<td>Yes, on vPro models; Windows Update reinstalls it after removal (Fujitsu's own support FAQ)</td>
+<td>Version unknown</td>
+<td>None found</td>
+</tr>
+<tr>
+<td>Others</td>
+<td>Getac, Panasonic, Microsoft Surface (2.x builds), Huawei, LG, and the contract manufacturers Quanta, Compal, Emdoor, PEGATRON, Foxconn</td>
+<td>All older than 50.26.623.243 (<a href="https://www.catalog.update.microsoft.com/Search.aspx?q=pid_icps" rel="nofollow">Catalog</a>)</td>
+<td>None found</td>
+</tr>
+</tbody>
+</table>
+<div class="markdown-heading"><h2 class="heading-element">IT admins</h2><a id="user-content-it-admins" class="anchor" aria-label="Permalink: IT admins" href="#it-admins"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>A public Intune remediation script <a href="https://github.com/realmjoin/realmjoin-remediation/tree/main/intel/remove-intel-connectivity-performance-suite">removes ICPS because of IPv6 <code>ERR_CONNECTION_RESET</code></a>. It leaves the drivers alone, because "Windows Update installs them again". It probably shares an author with the HP organization report above.</li>
+<li>In the Killer era, organizations running Dell fleets reported the same Microsoft-only resets on <a href="https://learn.microsoft.com/en-us/answers/questions/4340112/random-connection-reset-error" rel="nofollow">Microsoft Q&amp;A</a>.</li>
+</ul>
+<div class="markdown-heading"><h2 class="heading-element">Caveats</h2><a id="user-content-caveats" class="anchor" aria-label="Permalink: Caveats" href="#caveats"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>This tracker's captures are the only public packet-level proof of the flow label being zeroed. The HP report describes the same mechanism in words; the ASUS report measured the resets but not the label.</li>
+<li>Only three builds are reported broken. More than ten other builds have never been tested either way, so "older than the fix" does not mean "affected".</li>
+<li>A Catalog entry does not show which laptop models Windows Update offers it to.</li>
+<li>No device counts exist anywhere.</li>
+</ul>
+<footer>Privacy-sanitized public evidence. Private correspondence, account identifiers, ticket numbers and the machine's IP addresses are omitted. · <a href="incident-state.json">Machine-readable state</a> · <a href="./">Back to overview</a></footer>
+</main></body>
+</html>

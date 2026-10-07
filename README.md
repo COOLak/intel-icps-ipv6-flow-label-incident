@@ -1,17 +1,20 @@
 # Intel Connectivity Performance Suite breaks IPv6, OneNote and Microsoft 365
 
-> **Status, October 2, 2026:** Root cause confirmed with packet captures and a controlled A/B test. Reported to Intel, Microsoft and Samsung. **No vendor fix yet.** Affected users can apply the [workaround](workaround.md) today.
+> **Status, October 7, 2026:** Reproduced again on the OEM build, and **Intel's current generic ICPS 50.26.623.243 does not have the bug** (same laptop, same day: 138/170 IPv6 connections with the OEM build, 169/170 with the generic one). The broken OEM build 40.25.926.173 reached the laptop through **Windows Update**. No advisory, and no fix in the OEM channel yet. Affected users can disable ICPS or replace it with the generic build: see the [workaround](workaround.md).
 
 This repository is a public, privacy-sanitized evidence hub for a defect in **Intel Connectivity Performance Suite (ICPS)**, the "network optimizer" that ships preinstalled on Intel laptops. Its kernel driver rewrites the **IPv6 Flow Label** to zero partway through every TCP connection. Microsoft's edge network uses that label to route packets. So the rest of each connection lands on a server that never saw it start, and that server resets it.
 
 From the user's side this looks like random **"connection reset"** errors on many websites, and a **OneNote that can't reach its notebooks** while claiming they are "Up to date". IPv4 is unaffected, which is why the web and phone versions kept working and nobody could explain the failure.
 
-> **Intel was told in November 2025.** An engineer posted this exact mechanism on Intel Community ("Intel Connectivity Network Service is causing the ipv6 flowtable attribute set to 0"). Intel closed the inquiry for lack of a response. Similar reports go back to 2021. See [prior reports](prior-reports.md).
+> **Intel was told in September 2025.** An engineer posted this exact mechanism on Intel Community ("Intel Connectivity Network Service is causing the ipv6 flowtable attribute set to 0"), from an HP laptop. Intel closed the inquiry, the engineer re-posted in November, and Intel closed it again. Similar reports go back to 2021. See [prior reports](prior-reports.md).
+
+> **Not only Samsung.** Microsoft's Update Catalog lists the builds reported as broken under seven submitters: Samsung, Lenovo, VAIO, ASUS, HP, Dynabook and Huaqin. Of 1,086 ICPS entries from 19 companies, only one is the build shown fixed, and it couldn't reach this laptop. HP, ASUS and Lenovo owners report the same IPv6 resets. See [Not only Samsung](affected-oems.md).
 
 ## Start here
 
 - **[Open the public incident page](https://coolak.github.io/intel-icps-ipv6-flow-label-incident/)**
-- **[Prior reports: Intel was told, and closed the thread](prior-reports.md)**
+- **[Not only Samsung: who ships the affected builds](affected-oems.md)**
+- **[Prior reports: Intel was told, and closed the thread twice](prior-reports.md)**
 - **[Am I affected? Check and fix in five minutes](workaround.md)**
 - **[Full technical analysis: wire evidence and A/B proof](technical-analysis.md)**
 - **[What Intel, Microsoft and Samsung need to do](owner-action.md)**
@@ -30,13 +33,15 @@ From the user's side this looks like random **"connection reset"** errors on man
 | **Why it breaks things** | RFC 6437 expects the label to stay constant for the life of a flow. Microsoft's Azure Front Door hashes on it, so the label-0 packets go to a different backend, which answers with RST. |
 | **Impact** | 60–100% of new IPv6 connections to Microsoft's edge reset within one round trip. OneNote desktop sync dead for nearly three weeks. "Connection reset" on other sites. |
 | **Proof** | With ICPS running: 4/10 connections OK, 0/42 labels kept. With the ICPS driver stopped: 10/10 OK, 65/65 labels kept. Notebooks synced within seconds. |
-| **Workaround** | Disable `INTCCoSvc`, `IDBWM`, `Intel Connectivity Network Service` and `IntelConnectService`. See [workaround](workaround.md). |
+| **October 7 retest** | OEM 40.25.926.0 re-enabled: 138/170 IPv6 connections OK across 34 sites, 1,385 packets with the label zeroed; OneDrive, OneNote sync, Office, Teams, Skype, Azure portal, Azure DevOps and Visual Studio Marketplace resetting. Intel generic 50.26.623.243 (driver 12.10.14.33): 169/170 OK, 11,711/11,711 labels kept. |
+| **Distribution** | Windows Update installed the OEM ICPS packages on the affected laptop on 2025-05-06 (4.1025.304.2), 2026-05-09, 2026-05-14 and 2026-06-13 (40.25.926.173). |
+| **Workaround** | Disable `INTCCoSvc`, `IDBWM`, `Intel Connectivity Network Service` and `IntelConnectService`, or replace the OEM build with Intel's generic 50.26.623.243. See [workaround](workaround.md). |
 
 ## Who is responsible for what
 
-- **Intel** ships a kernel driver that breaks a basic IPv6 rule, on every connection, invisibly.
-- **Samsung** preinstalled it on the laptop. The owner never chose it and had no way to know it was there.
-- **Microsoft** runs an edge that falls over on it, where Google, Cloudflare and Akamai do not. Microsoft also ships a OneNote that reports a dead connection as "Up to date". An escalated Microsoft support case opened in August never found the cause.
+- **Intel** shipped a kernel driver that breaks a basic IPv6 rule, on every connection, invisibly. Its current generic build no longer does, but the fix was silent: no advisory, nothing in the release notes, and no visible effort to get OEMs off the broken builds. Users in Intel's forum were told to uninstall the software, and the broken builds keep reaching laptops through OEM packages on Windows Update. A fix that the affected users never receive doesn't fix anything for them.
+- **Samsung** preinstalled it and published the broken 40.25.926.173 build on Windows Update. Its one fixed submission targets different device IDs and never reached this laptop. The owner never chose the software and had no way to know it was there. Lenovo, VAIO, ASUS, HP and Dynabook publish broken builds too.
+- **Microsoft** delivered the broken build through Windows Update, three times in 2026 on the affected laptop, and its hardware program signed it. Its edge falls over on the mangled packets, where Google, Cloudflare and Akamai do not. OneNote reports the dead connection as "Up to date". An escalated Microsoft support case opened in August never found the cause and has gone quiet.
 
 The details and specific asks are in [owner-action.md](owner-action.md).
 
