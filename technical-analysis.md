@@ -6,7 +6,7 @@ Intel Connectivity Performance Suite zeroes the IPv6 Flow Label mid-connection, 
 
 - Samsung Galaxy Book, model 960QHA (BIOS P17ALY.390.260616.03). Intel Core Ultra 7 256V (Lunar Lake). Intel Wi-Fi 7 BE201, driver 23.160.0.4.
 - Windows 11 Pro 26H2, build 26300.9457. OneNote (Microsoft 365) 16.0.20430.20092.
-- **Intel Connectivity Performance Suite** 40.25.926.0, preinstalled by the OEM:
+- **Intel Connectivity Performance Suite** 40.25.926.0 (app version; its driver packages are 40.25.926.173), preinstalled by the OEM:
   - `IntcCo11X64.sys` 11.5.11.19, "Intel Connectivity Traffic Control Callout Driver", service `INTCCoSvc`
   - WFP provider "Rivet Networks, LLC - RFE version 6.1.0.1"
   - Services `IDBWM` (Intel Dynamic Bandwidth Management) 1.19.0.0, `Intel Connectivity Network Service` 40.25.926.173, `IntelConnectService`
@@ -75,8 +75,8 @@ Intel Customer Support asked for a test with Intel's own generic ICPS instead of
 
 | Step | ICPS | Traffic-control driver | IPv6 connections OK | Post-handshake packets keeping their flow label | To the OneDrive/OneNote edge (`2620:1ec:50::11`) |
 |---|---|---|---|---|---|
-| A | OEM 40.25.926.0 installed, disabled | stopped | 168/170 | 3779/3779 | all kept |
-| B | **OEM 40.25.926.0 re-enabled** | `IntcCo11X64.sys` **11.5.11.19** | **138/170** | **8457/9842** (1385 set to 0) | **0/60** |
+| A | OEM 40.25.926.173 installed, disabled | stopped | 168/170 | 3779/3779 | all kept |
+| B | **OEM 40.25.926.173 re-enabled** | `IntcCo11X64.sys` **11.5.11.19** | **138/170** | **8457/9842** (1385 set to 0) | **0/60** |
 | C | OEM disabled again | stopped | 169/170 | 4240/4240 | all kept |
 | N | OEM removed (Intel article 000093451 method), reboot | none | 168/170 | 4230/4230 | all kept |
 | G | **Intel generic 50.26.623.243** installed and running | `IntcCo11X64.sys` **12.10.14.33** | **169/170** | **11711/11711** | **201/201** |

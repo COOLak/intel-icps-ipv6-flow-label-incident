@@ -26,14 +26,14 @@ From the user's side this looks like random **"connection reset"** errors on man
 
 | | |
 |---|---|
-| **Component** | Intel Connectivity Performance Suite 40.25.926.0. Driver `IntcCo11X64.sys` 11.5.11.19, "Intel Connectivity Traffic Control Callout Driver" (service `INTCCoSvc`), WFP provider "Rivet Networks, LLC - RFE version 6.1.0.1" |
+| **Component** | Intel Connectivity Performance Suite 40.25.926.0 (app version; its driver packages are 40.25.926.173). Driver `IntcCo11X64.sys` 11.5.11.19, "Intel Connectivity Traffic Control Callout Driver" (service `INTCCoSvc`), WFP provider "Rivet Networks, LLC - RFE version 6.1.0.1" |
 | **Shipped on** | Preinstalled by the OEM. Observed on a Samsung Galaxy Book (960QHA, Intel Core Ultra 7 256V, Intel Wi-Fi 7 BE201) |
 | **OS** | Windows 11 Pro 26H2, build 26300.9457 |
 | **Defect** | The SYN leaves with the stack's IPv6 Flow Label. Every ACK and data segment after it leaves with Flow Label `0`. On the wire, **0 of 42** post-handshake packets kept their label. |
 | **Why it breaks things** | RFC 6437 expects the label to stay constant for the life of a flow. Microsoft's Azure Front Door hashes on it, so the label-0 packets go to a different backend, which answers with RST. |
 | **Impact** | 60–100% of new IPv6 connections to Microsoft's edge reset within one round trip. OneNote desktop sync dead for nearly three weeks. "Connection reset" on other sites. |
 | **Proof** | With ICPS running: 4/10 connections OK, 0/42 labels kept. With the ICPS driver stopped: 10/10 OK, 65/65 labels kept. Notebooks synced within seconds. |
-| **October 7 retest** | OEM 40.25.926.0 re-enabled: 138/170 IPv6 connections OK across 34 sites, 1,385 packets with the label zeroed; OneDrive, OneNote sync, Office, Teams, Skype, Azure portal, Azure DevOps and Visual Studio Marketplace resetting. Intel generic 50.26.623.243 (driver 12.10.14.33): 169/170 OK, 11,711/11,711 labels kept. |
+| **October 7 retest** | OEM 40.25.926.173 re-enabled: 138/170 IPv6 connections OK across 34 sites, 1,385 packets with the label zeroed; OneDrive, OneNote sync, Office, Teams, Skype, Azure portal, Azure DevOps and Visual Studio Marketplace resetting. Intel generic 50.26.623.243 (driver 12.10.14.33): 169/170 OK, 11,711/11,711 labels kept. |
 | **Distribution** | Windows Update installed the OEM ICPS packages on the affected laptop on 2025-05-06 (4.1025.304.2), 2026-05-09, 2026-05-14 and 2026-06-13 (40.25.926.173). |
 | **Workaround** | Disable `INTCCoSvc`, `IDBWM`, `Intel Connectivity Network Service` and `IntelConnectService`, or replace the OEM build with Intel's generic 50.26.623.243. See [workaround](workaround.md). |
 

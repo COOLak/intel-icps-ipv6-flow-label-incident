@@ -56,7 +56,7 @@ Intel Customer Support says the OEM package may differ from Intel's generic rele
 
 ## 2026-10-07: reproduced, and the generic build does not have the bug
 
-- **10:28–10:33 UTC:** the original failure is reproduced on the OEM build. Re-enabling ICPS 40.25.926.0 drops IPv6 connections from 168/170 to 138/170 across 34 websites, with OneDrive, OneNote sync, Office, Teams, Skype, the Azure portal, Azure DevOps and the Visual Studio Marketplace resetting. Disabling it again restores 169/170.
+- **10:28–10:33 UTC:** the original failure is reproduced on the OEM build. Re-enabling ICPS 40.25.926.173 drops IPv6 connections from 168/170 to 138/170 across 34 websites, with OneDrive, OneNote sync, Office, Teams, Skype, the Azure portal, Azure DevOps and the Visual Studio Marketplace resetting. Disabling it again restores 169/170.
 - **11:58–12:07 UTC:** the OEM packages are removed using the method in Intel's support article 000093451, the Store app and leftovers are removed with Revo Uninstaller, and the PC is restarted.
 - **12:34 UTC:** with no ICPS installed, 168/170 connections succeed and every packet keeps its flow label.
 - **12:39 UTC:** with Intel's generic ICPS 50.26.623.243 (driver 12.10.14.33) installed and its filters active, 169/170 succeed and all 11,711 post-handshake packets keep their flow label. See [technical analysis](technical-analysis.md#october-7-reproduced-again-and-intels-generic-build-does-not-have-the-bug).

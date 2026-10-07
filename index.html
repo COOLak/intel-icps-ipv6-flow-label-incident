@@ -47,7 +47,7 @@
 </section>
 
 <div class="grid">
-  <div class="card"><h2>IPv6 connections OK, OEM build</h2><div class="metric">138 / 170</div><p class="muted">34 sites, ICPS 40.25.926.0 running (Oct 7)</p></div>
+  <div class="card"><h2>IPv6 connections OK, OEM build</h2><div class="metric">138 / 170</div><p class="muted">34 sites, ICPS 40.25.926.173 running (Oct 7)</p></div>
   <div class="card"><h2>IPv6 connections OK, Intel generic build</h2><div class="metric">169 / 170</div><p class="muted">same laptop, ICPS 50.26.623.243 (Oct 7)</p></div>
   <div class="card"><h2>Packets with the flow label zeroed</h2><div class="metric">1,385 → 0</div><p class="muted">OEM build vs. generic build</p></div>
   <div class="card"><h2>OneNote desktop sync</h2><div class="metric">~3 weeks</div><p class="muted">broken, with empty notebooks shown as "Up to date"</p></div>
@@ -59,7 +59,7 @@
 </section>
 
 <h2>What is going on</h2>
-<p>The driver is <code>IntcCo11X64.sys</code> 11.5.11.19, the "Intel Connectivity Traffic Control Callout Driver" (service <code>INTCCoSvc</code>, WFP provider "Rivet Networks, LLC - RFE version 6.1.0.1"). It ships as part of Intel Connectivity Performance Suite 40.25.926.0, preinstalled on the affected Samsung Galaxy Book. The Windows stack sends the SYN with a proper IPv6 Flow Label. The Intel callout then re-emits every ACK and data segment with the label set to <code>0</code>.</p>
+<p>The driver is <code>IntcCo11X64.sys</code> 11.5.11.19, the "Intel Connectivity Traffic Control Callout Driver" (service <code>INTCCoSvc</code>, WFP provider "Rivet Networks, LLC - RFE version 6.1.0.1"). It ships as part of Intel Connectivity Performance Suite 40.25.926.0 (app version; its driver packages are 40.25.926.173), preinstalled on the affected Samsung Galaxy Book. The Windows stack sends the SYN with a proper IPv6 Flow Label. The Intel callout then re-emits every ACK and data segment with the label set to <code>0</code>.</p>
 <p>RFC 6437 expects the label to stay constant for the life of a flow. Microsoft's Azure Front Door hashes on it, so the label-0 packets go to a different node, which answers with a reset. The SYN-ACK comes back at hop limit 47 and the RST at hop limit 49, so two different machines are answering. IPv4 has no flow label and is unaffected. That is why OneNote on the web and on a phone kept working and nobody could explain the failure. <a href="technical-analysis.html">Full wire evidence and A/B table</a>.</p>
 
 <h2>Three companies, three failures</h2>
