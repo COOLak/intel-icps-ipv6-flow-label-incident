@@ -61,3 +61,10 @@ Intel Customer Support says the OEM package may differ from Intel's generic rele
 - **12:34 UTC:** with no ICPS installed, 168/170 connections succeed and every packet keeps its flow label.
 - **12:39 UTC:** with Intel's generic ICPS 50.26.623.243 (driver 12.10.14.33) installed and its filters active, 169/170 succeed and all 11,711 post-handshake packets keep their flow label. See [technical analysis](technical-analysis.md#october-7-reproduced-again-and-intels-generic-build-does-not-have-the-bug).
 - The results are sent to Intel. The Microsoft support case is asked to escalate beyond OneNote, after six weeks without an update.
+
+## 2026-10-07: Samsung support has no escalation path
+
+- **16:03–17:05 UTC, Samsung US live chat:** across four agents, Samsung says the October 2 case was "only for documentation", that it has no software engineering escalation department, and that the owner should contact Amazon or call a US phone line. A supervisor offers basic troubleshooting or a repair, neither of which can change a driver package delivered through Windows Update, then gives the address of Samsung Electronics America's Office of the President.
+- A formal complaint and compensation claim is sent to the Office of the President, asking for the fixed package on Windows Update and a written reply within 14 days.
+- An [update](https://us.community.samsung.com/t5/Computers/Galaxy-Book-ships-Intel-software-that-breaks-IPv6-networking-and/m-p/3683502/highlight/true#M14838) is posted on the Samsung Community thread.
+- Intel is sent the list of other affected laptop makers. See [affected laptop makers](affected-oems.md).

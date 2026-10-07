@@ -185,13 +185,27 @@
                                         "channel":  "Samsung Community US",
                                         "public":  true,
                                         "state":  "posted_hidden_as_spam_then_restored_by_moderator",
-                                        "url":  "https://us.community.samsung.com/t5/Computers/Galaxy-Book-ships-Intel-software-that-breaks-IPv6-networking-and/m-p/3679834"
+                                        "url":  "https://us.community.samsung.com/t5/Computers/Galaxy-Book-ships-Intel-software-that-breaks-IPv6-networking-and/m-p/3679834",
+                                        "update_posted":  "2026-10-07",
+                                        "update_url":  "https://us.community.samsung.com/t5/Computers/Galaxy-Book-ships-Intel-software-that-breaks-IPv6-networking-and/m-p/3683502/highlight/true#M14838"
                                     },
                                     {
                                         "channel":  "Samsung Care support case (live chat)",
                                         "public":  false,
                                         "date":  "2026-10-02",
                                         "state":  "opened_escalation_requested"
+                                    },
+                                    {
+                                        "channel":  "Samsung US live chat (second contact, supervisor)",
+                                        "public":  false,
+                                        "date":  "2026-10-07",
+                                        "state":  "no_escalation_path_referred_to_office_of_the_president"
+                                    },
+                                    {
+                                        "channel":  "Samsung Electronics America, Office of the President",
+                                        "public":  false,
+                                        "date":  "2026-10-07",
+                                        "state":  "formal_complaint_and_compensation_claim_sent_awaiting_reply"
                                     }
                                 ],
                     "other":  [
