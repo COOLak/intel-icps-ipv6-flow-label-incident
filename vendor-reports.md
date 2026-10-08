@@ -19,6 +19,8 @@ Last updated: **2026-10-08**. "Filed" means submitted or published. It does not 
 | [Microsoft Q&A thread](https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo) | Public | Answer with the root cause and workaround posted 2026-10-02, for other users with the same symptom. |
 | Microsoft Support case | Private | Opened 2026-08-27 and escalated to OneNote engineering. It never found the cause, and Microsoft has not replied since. Full root cause sent 2026-10-02. On 2026-10-07, asked for a case owner and escalation to the Windows Update driver-distribution team and Azure Front Door. Awaiting answer. |
 | Microsoft Executive Customer Relations | Private | Letter to the Office of the CEO sent 2026-10-07. On 2026-10-08, a relationship manager from Executive Customer Relations opened a new case and asked for a phone contact. Contact details sent the same day. Awaiting call. |
+| Azure Networking engineering | Private | Packet-level evidence sent to Azure Front Door engineering leadership on 2026-10-07. On 2026-10-08, Microsoft confirmed the problem: when a client changes the flow label after the SYN, routers that hash on the label send the rest of the connection to a different Azure Front Door server. Microsoft said it has asked its team to work with the Windows team on a fix, and is working on the Azure Front Door side to reduce the impact. No date given. |
+| Microsoft support escalation | Private | On 2026-10-08, a senior Microsoft leader passed the support case to his escalation team, which is to make contact. |
 
 ## Samsung
 
@@ -33,4 +35,4 @@ Last updated: **2026-10-08**. "Filed" means submitted or published. It does not 
 - Any vendor confirmation that the defect has been reproduced.
 - An Intel advisory, or a statement of which ICPS version fixed the flow-label behavior.
 - A Samsung, Lenovo, ASUS, HP, VAIO or Dynabook update that replaces the broken builds on Windows Update.
-- Any Microsoft statement on Windows Update distribution, WFP flow-label preservation or edge tolerance.
+- A date for Microsoft's fix, or any Microsoft statement on Windows Update distribution of the broken builds.

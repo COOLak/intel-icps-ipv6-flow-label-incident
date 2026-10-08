@@ -71,6 +71,8 @@ Intel Customer Support says the OEM package may differ from Intel's generic rele
 - Intel Customer Support replies (by 2026-10-08) that it has passed five requests to its team: an advisory naming the affected and first fixed ICPS versions, notice to every OEM shipping affected builds, work with Microsoft to stop Windows Update offering them, an engineering escalation on which driver version fixed the flow label, and review of the compensation request. Intel promises a status update by October 13.
 - A letter is sent to Microsoft's Office of the CEO, asking for a named owner for the support case.
 
-## 2026-10-08: Microsoft Executive Customer Relations opens a case
+## 2026-10-08: Microsoft confirms the mechanism and starts work on a fix
 
-A relationship manager from Microsoft Executive Customer Relations opens a new case in response to the letter and asks for a phone contact. Contact details are sent the same day.
+- A relationship manager from Microsoft Executive Customer Relations opens a new case in response to the letter and asks for a phone contact. Contact details are sent the same day.
+- Microsoft's Azure Networking engineering leadership confirms the problem: when a client changes the IPv6 flow label after the SYN, routers that hash on the label deliver the rest of the connection to a different Azure Front Door server. Microsoft says it has asked its team to work with the Windows team on a fix, and is working on the Azure Front Door side to reduce the impact. No date is given.
+- A senior Microsoft leader passes the support case to his escalation team.
