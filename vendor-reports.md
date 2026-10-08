@@ -1,13 +1,13 @@
 # Vendor reports and status
 
-Last updated: **2026-10-07**. "Filed" means submitted or published. It does not mean a vendor has acknowledged, reproduced or fixed anything.
+Last updated: **2026-10-08**. "Filed" means submitted or published. It does not mean a vendor has acknowledged, reproduced or fixed anything.
 
 ## Intel
 
 | Channel | Visibility | Status |
 |---|---|---|
 | [Intel Community, Wireless board](https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647) | Public | Posted 2026-10-02. |
-| Intel Customer Support case | Private | Opened 2026-10-02. On 2026-10-06 Intel asked for a test with its generic ICPS package. Results sent 2026-10-07: the generic 50.26.623.243 does not have the bug. Asked Intel which version fixed it, to get the fix to OEMs and Windows Update, and to publish an advisory. On 2026-10-07, sent Intel the list of other affected laptop makers and organizations. Awaiting answer. |
+| Intel Customer Support case | Private | Opened 2026-10-02. On 2026-10-06 Intel asked for a test with its generic ICPS package. Results sent 2026-10-07: the generic 50.26.623.243 does not have the bug. Asked Intel which version fixed it, to get the fix to OEMs and Windows Update, and to publish an advisory. On 2026-10-07, sent Intel the list of other affected laptop makers and organizations. Intel Customer Support replied (by 2026-10-08) that it had passed five requests to its team: an advisory naming the affected and first fixed versions, notice to every OEM shipping affected builds to supersede them on Windows Update and in their own tools, work with Microsoft to stop Windows Update offering the broken builds, an engineering escalation to confirm which driver version fixed the flow label and why the release notes don't say so, and review of the compensation request. Intel promised a status update by 2026-10-13. |
 
 ## Microsoft
 
@@ -18,6 +18,7 @@ Last updated: **2026-10-07**. "Filed" means submitted or published. It does not 
 | [Feedback Portal idea (OneNote)](https://feedbackportal.microsoft.com/feedback/idea/dd326ebc-9da1-f111-85ce-7c1e529382f4) | Public | Opened 2026-08-27 for the symptom. Root cause added as a comment on 2026-10-02. |
 | [Microsoft Q&A thread](https://learn.microsoft.com/en-us/answers/questions/5682454/onenote-sync-says-up-to-date-on-old-pc-but-noteboo) | Public | Answer with the root cause and workaround posted 2026-10-02, for other users with the same symptom. |
 | Microsoft Support case | Private | Opened 2026-08-27 and escalated to OneNote engineering. It never found the cause, and Microsoft has not replied since. Full root cause sent 2026-10-02. On 2026-10-07, asked for a case owner and escalation to the Windows Update driver-distribution team and Azure Front Door. Awaiting answer. |
+| Microsoft Executive Customer Relations | Private | Letter to the Office of the CEO sent 2026-10-07. On 2026-10-08, a relationship manager from Executive Customer Relations opened a new case and asked for a phone contact. Contact details sent the same day. Awaiting call. |
 
 ## Samsung
 

@@ -68,3 +68,9 @@ Intel Customer Support says the OEM package may differ from Intel's generic rele
 - A formal complaint and compensation claim is sent to the Office of the President, asking for the fixed package on Windows Update and a written reply within 14 days.
 - An [update](https://us.community.samsung.com/t5/Computers/Galaxy-Book-ships-Intel-software-that-breaks-IPv6-networking-and/m-p/3683502/highlight/true#M14838) is posted on the Samsung Community thread.
 - Intel is sent the list of other affected laptop makers. See [affected laptop makers](affected-oems.md).
+- Intel Customer Support replies (by 2026-10-08) that it has passed five requests to its team: an advisory naming the affected and first fixed ICPS versions, notice to every OEM shipping affected builds, work with Microsoft to stop Windows Update offering them, an engineering escalation on which driver version fixed the flow label, and review of the compensation request. Intel promises a status update by October 13.
+- A letter is sent to Microsoft's Office of the CEO, asking for a named owner for the support case.
+
+## 2026-10-08: Microsoft Executive Customer Relations opens a case
+
+A relationship manager from Microsoft Executive Customer Relations opens a new case in response to the letter and asks for a phone contact. Contact details are sent the same day.
