@@ -1,13 +1,13 @@
 # Vendor reports and status
 
-Last updated: **2026-10-08**. "Filed" means submitted or published. It does not mean a vendor has acknowledged, reproduced or fixed anything.
+Last updated: **2026-10-13**. "Filed" means submitted or published. It does not mean a vendor has acknowledged, reproduced or fixed anything.
 
 ## Intel
 
 | Channel | Visibility | Status |
 |---|---|---|
 | [Intel Community, Wireless board](https://community.intel.com/t5/Wireless/Intel-ICPS-driver-zeroes-IPv6-Flow-Label-mid-connection-breaking/m-p/1760647) | Public | Posted 2026-10-02. |
-| Intel Customer Support case | Private | Opened 2026-10-02. On 2026-10-06 Intel asked for a test with its generic ICPS package. Results sent 2026-10-07: the generic 50.26.623.243 does not have the bug. Asked Intel which version fixed it, to get the fix to OEMs and Windows Update, and to publish an advisory. On 2026-10-07, sent Intel the list of other affected laptop makers and organizations. Intel Customer Support replied (by 2026-10-08) that it had passed five requests to its team: an advisory naming the affected and first fixed versions, notice to every OEM shipping affected builds to supersede them on Windows Update and in their own tools, work with Microsoft to stop Windows Update offering the broken builds, an engineering escalation to confirm which driver version fixed the flow label and why the release notes don't say so, and review of the compensation request. Intel promised a status update by 2026-10-13. |
+| Intel Customer Support case | Private | Opened 2026-10-02. On 2026-10-06 Intel asked for a test with its generic ICPS package. Results sent 2026-10-07: the generic 50.26.623.243 does not have the bug. Asked Intel which version fixed it, to get the fix to OEMs and Windows Update, and to publish an advisory. On 2026-10-07, sent Intel the list of other affected laptop makers and organizations. Intel Customer Support replied (by 2026-10-08) that it had passed five requests to its team: an advisory naming the affected and first fixed versions, notice to every OEM shipping affected builds to supersede them on Windows Update and in their own tools, work with Microsoft to stop Windows Update offering the broken builds, an engineering escalation to confirm which driver version fixed the flow label and why the release notes don't say so, and review of the compensation request. Intel promised a status update by 2026-10-13. On 2026-10-13 Intel replied that the installed package is Samsung's OEM build, recommended asking Samsung for its latest OEM version, and said that the advisory, OEM notification, Microsoft coordination, compensation and credit requests fall within Samsung's scope as the OEM. In the same reply Intel confirmed in writing that its generic 50.26.623.243 (driver 12.10.14.33) does not zero the flow label. The same day, Intel was asked, as the maker of the driver, whether driver 11.5.11.19 in the OEM package is Intel's own unmodified build, which driver version first keeps the flow label, whether Intel has told the laptop makers, and what came of each request it listed on 2026-10-08. A written answer was requested by 2026-10-21. |
 
 ## Microsoft
 

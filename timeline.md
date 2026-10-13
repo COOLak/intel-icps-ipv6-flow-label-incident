@@ -76,3 +76,8 @@ Intel Customer Support says the OEM package may differ from Intel's generic rele
 - A relationship manager from Microsoft Executive Customer Relations opens a new case in response to the letter and asks for a phone contact. Contact details are sent the same day.
 - Microsoft's Azure Networking engineering leadership confirms the problem: when a client changes the IPv6 flow label after the SYN, routers that hash on the label deliver the rest of the connection to a different Azure Front Door server. Microsoft says it has asked its team to work with the Windows team on a fix, and is working on the Azure Front Door side to reduce the impact. No date is given.
 - A senior Microsoft leader passes the support case to his escalation team.
+
+## 2026-10-13: Intel refers the OEM build to Samsung
+
+- Intel Customer Support replies that the ICPS package on the laptop is Samsung's OEM build, recommends asking Samsung for its latest OEM version, and says that the advisory, OEM notification, Microsoft coordination, compensation and credit requests fall within Samsung's scope as the OEM. It confirms in writing that its generic ICPS 50.26.623.243 (driver 12.10.14.33) "does not exhibit the IPv6 Flow Label zeroing behavior".
+- Intel is asked, as the maker of the driver, whether driver 11.5.11.19 in the OEM package is Intel's own unmodified build, which driver version first keeps the flow label, whether Intel has told the laptop makers, and what came of each request it listed on October 8. Microsoft's Update Catalog lists the same 40.25.926.173 build under Lenovo, VAIO and Huaqin as well as Samsung. A written answer is requested by October 21.
