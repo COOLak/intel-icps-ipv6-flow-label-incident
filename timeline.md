@@ -81,3 +81,8 @@ Intel Customer Support says the OEM package may differ from Intel's generic rele
 
 - Intel Customer Support replies that the ICPS package on the laptop is Samsung's OEM build, recommends asking Samsung for its latest OEM version, and says that the advisory, OEM notification, Microsoft coordination, compensation and credit requests fall within Samsung's scope as the OEM. It confirms in writing that its generic ICPS 50.26.623.243 (driver 12.10.14.33) "does not exhibit the IPv6 Flow Label zeroing behavior".
 - Intel is asked, as the maker of the driver, whether driver 11.5.11.19 in the OEM package is Intel's own unmodified build, which driver version first keeps the flow label, whether Intel has told the laptop makers, and what came of each request it listed on October 8. Microsoft's Update Catalog lists the same 40.25.926.173 build under Lenovo, VAIO and Huaqin as well as Samsung. A written answer is requested by October 21.
+
+## 2026-10-14: Microsoft declines compensation
+
+- Microsoft Executive Customer Relations replies that it does not compensate customers for time spent troubleshooting, declines both requested compensation options and calls the decision final. It says the technical findings and the engineering review are separate from compensation, and gives no review reference, owner or date for a Windows Update fix.
+- A reply asks for a manager review of the decision with written reasons, the reference and owning team of the engineering review, and a date for delivering a corrected ICPS build through Windows Update.
