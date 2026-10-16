@@ -1,7 +1,7 @@
 {
     "schema":  "incident-state/v1",
     "incident":  "Intel Connectivity Performance Suite zeroes IPv6 Flow Label mid-connection",
-    "updated":  "2026-10-14",
+    "updated":  "2026-10-16",
     "status":  "root_cause_confirmed_reproduced_fixed_in_intel_generic_build_broken_oem_builds_still_on_windows_update",
     "component":  {
                       "product":  "Intel Connectivity Performance Suite",
@@ -143,7 +143,7 @@
                                       "channel":  "Intel Customer Support case",
                                       "public":  false,
                                       "date":  "2026-10-02",
-                                      "state":  "intel_referred_oem_build_to_samsung_2026-10-13_intel_only_questions_sent_2026-10-13"
+                                      "state":  "intel_referred_oem_build_to_samsung_2026-10-13_intel_only_questions_sent_2026-10-13_said_nothing_further_to_provide_2026-10-14_higher_level_contact_promised_not_received"
                                   }
                               ],
                     "microsoft":  [
@@ -177,7 +177,22 @@
                                           "public":  false,
                                           "opened":  "2026-08-27",
                                           "root_cause_sent":  "2026-10-02",
-                                          "escalation_requested":  "2026-10-07"
+                                          "escalation_requested":  "2026-10-07",
+                                          "state":  "no_further_support_message_received_since_escalation_awaiting_answer"
+                                      },
+                                      {
+                                          "channel":  "Microsoft Executive Customer Relations",
+                                          "public":  false,
+                                          "opened":  "2026-10-08",
+                                          "last_reply":  "2026-10-16",
+                                          "state":  "pointed_to_feedback_hub_2026-10-16_no_engineering_owner_reference_or_date"
+                                      },
+                                      {
+                                          "channel":  "Azure Networking engineering",
+                                          "public":  false,
+                                          "evidence_sent":  "2026-10-07",
+                                          "mechanism_confirmed":  "2026-10-08",
+                                          "state":  "confirmed_mechanism_asked_team_to_work_with_windows_team_on_fix_no_date_timeline_request_unanswered"
                                       }
                                   ],
                     "samsung":  [
@@ -202,10 +217,16 @@
                                         "state":  "no_escalation_path_referred_to_office_of_the_president"
                                     },
                                     {
+                                        "channel":  "Samsung US live chat (escalation for the Office of the President)",
+                                        "public":  false,
+                                        "date":  "2026-10-09",
+                                        "state":  "escalation_opened_contact_promised_within_24_to_48_business_hours_none_received_as_of_2026-10-16"
+                                    },
+                                    {
                                         "channel":  "Samsung Electronics America, Office of the President",
                                         "public":  false,
                                         "date":  "2026-10-07",
-                                        "state":  "formal_complaint_and_compensation_claim_sent_awaiting_reply"
+                                        "state":  "formal_complaint_sent_escalation_opened_2026-10-09_no_contact_or_answer_as_of_2026-10-16"
                                     }
                                 ],
                     "other":  [
@@ -234,6 +255,7 @@
                          "catalog_icps_entries":  1086,
                          "catalog_versions":  47,
                          "catalog_companies":  19,
+                         "reported_broken_builds_rechecked":  "2026-10-16, counts unchanged; fixed build still 1 entry",
                          "reported_broken_builds":  {
                                                         "4.1025.207.1":  "HP 6, Dynabook 2",
                                                         "40.25.725.165":  "ASUS 30, HP 3, Lenovo 3, VAIO 3",
