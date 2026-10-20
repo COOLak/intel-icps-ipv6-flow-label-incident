@@ -1,6 +1,6 @@
 # Not only Samsung: who ships the affected builds
 
-Research as of 2026-10-07. On 2026-10-16 the Catalog still listed the three builds reported broken with the same entry counts, and the fixed build still had a single entry. Every claim below cites its source. "Catalog" means Microsoft's own [Update Catalog](https://www.catalog.update.microsoft.com/Search.aspx?q=pid_icps), which lists the driver packages that partners submit for delivery through Windows Update. The "company" on a Catalog entry is the partner that submitted it.
+Research as of 2026-10-07. On 2026-10-16 and again on 2026-10-20 the Catalog still listed the three builds reported broken with the same entry counts, and the fixed build still had a single entry. Every claim below cites its source. "Catalog" means Microsoft's own [Update Catalog](https://www.catalog.update.microsoft.com/Search.aspx?q=pid_icps), which lists the driver packages that partners submit for delivery through Windows Update. The "company" on a Catalog entry is the partner that submitted it.
 
 ## The short version
 

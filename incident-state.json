@@ -1,7 +1,7 @@
 {
     "schema":  "incident-state/v1",
     "incident":  "Intel Connectivity Performance Suite zeroes IPv6 Flow Label mid-connection",
-    "updated":  "2026-10-16",
+    "updated":  "2026-10-20",
     "status":  "root_cause_confirmed_reproduced_fixed_in_intel_generic_build_broken_oem_builds_still_on_windows_update",
     "component":  {
                       "product":  "Intel Connectivity Performance Suite",

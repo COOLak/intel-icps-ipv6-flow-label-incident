@@ -106,3 +106,10 @@ Intel Customer Support says the OEM package may differ from Intel's generic rele
 - Microsoft's Azure Networking engineering, which confirmed the mechanism in writing on 2026-10-08, the day after receiving the evidence, has given no date for a fix and has not answered a request for a timeline.
 - **19:49–19:52 UTC, Microsoft Update Catalog:** the three builds reported broken are still listed, with the same entry counts as on 2026-10-07: 40.25.926.173 (23 entries), 40.25.725.165 (39) and 4.1025.207.1 (8). The build shown fixed, 50.26.623.243, still has a single entry, for Windows 11 25H2 and later only. See [affected laptop makers](affected-oems.md).
 - No Intel advisory has been published.
+
+## 2026-10-20: Intel is "still actively reviewing"; the Catalog is unchanged
+
+- **02:09 UTC:** a different Intel Customer Support agent writes that Intel is "still actively reviewing this matter internally". The reply answers none of the questions sent on 2026-10-13. It asks whether Samsung has sent any update, and says the case will be "temporarily closed" if there is no reply by 2026-10-22. The higher-level contact promised on 2026-10-14 has not been in touch.
+- **05:40 UTC, Microsoft Update Catalog:** the three builds reported broken are still listed with the same entry counts: 40.25.926.173 (23), 40.25.725.165 (39) and 4.1025.207.1 (8). The fixed 50.26.623.243 still has a single entry.
+- **05:49 UTC:** a reply asks Intel to keep the case open. It reports that Samsung has sent nothing since its 2026-10-09 escalation ticket. It also gives Microsoft's status: the mechanism is confirmed and work is under way on the Azure Front Door side and with the Windows team, but there is no date, and the Catalog is unchanged. It repeats the questions only Intel can answer: whether driver 11.5.11.19 is Intel's unmodified build, which driver version first keeps the flow label, whether Intel has told the laptop makers, and the status of each action Intel listed on 2026-10-08.
+- No contact from Samsung since 2026-10-09, and no Microsoft date. No Intel advisory has been published.

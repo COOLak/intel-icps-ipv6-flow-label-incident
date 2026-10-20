@@ -27,7 +27,7 @@
   <a href="https://github.com/COOLak/intel-icps-ipv6-flow-label-incident">Repository</a>
 </nav>
 <div class="markdown-heading"><h1 class="heading-element">Vendor reports and status</h1><a id="user-content-vendor-reports-and-status" class="anchor" aria-label="Permalink: Vendor reports and status" href="#vendor-reports-and-status"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
-<p>Last updated: <strong>2026-10-16</strong>. "Filed" means submitted or published. It does not mean a vendor has acknowledged, reproduced or fixed anything.</p>
+<p>Last updated: <strong>2026-10-20</strong>. "Filed" means submitted or published. It does not mean a vendor has acknowledged, reproduced or fixed anything.</p>
 <div class="markdown-heading"><h2 class="heading-element">Intel</h2><a id="user-content-intel" class="anchor" aria-label="Permalink: Intel" href="#intel"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
 <table>
 <thead>
@@ -46,7 +46,7 @@
 <tr>
 <td>Intel Customer Support case</td>
 <td>Private</td>
-<td>Opened 2026-10-02. On 2026-10-06 Intel asked for a test with its generic ICPS package. Results sent 2026-10-07: the generic 50.26.623.243 does not have the bug. Asked Intel which version fixed it, to get the fix to OEMs and Windows Update, and to publish an advisory. On 2026-10-07, sent Intel the list of other affected laptop makers and organizations. Intel Customer Support replied (by 2026-10-08) that it had passed requests to its team for an advisory naming the affected and first fixed versions, notice to every OEM shipping affected builds to supersede them on Windows Update and in their own tools, work with Microsoft to stop Windows Update offering the broken builds, and an engineering escalation to confirm which driver version fixed the flow label and why the release notes don't say so. Intel promised a status update by 2026-10-13. On 2026-10-13 Intel replied that the installed package is Samsung's OEM build, recommended asking Samsung for its latest OEM version, and said that the advisory, OEM notification and Microsoft coordination requests fall within Samsung's scope as the OEM. In the same reply Intel acknowledged in writing, citing the owner's tests, that its generic 50.26.623.243 (driver 12.10.14.33) does not zero the flow label. The same day, Intel was asked, as the maker of the driver, whether driver 11.5.11.19 in the OEM package is Intel's own unmodified build, which driver version first keeps the flow label, whether Intel has told the laptop makers, and what came of each request it listed on 2026-10-08. A written answer was requested by 2026-10-21. On 2026-10-14 Intel replied that "The information previously shared represents the full extent of what we are currently able to provide", and, on the request for a contact at a higher level, that the owner "will be reached out to as soon as possible". No such contact as of 2026-10-16.</td>
+<td>Opened 2026-10-02. On 2026-10-06 Intel asked for a test with its generic ICPS package. Results sent 2026-10-07: the generic 50.26.623.243 does not have the bug. Asked Intel which version fixed it, to get the fix to OEMs and Windows Update, and to publish an advisory. On 2026-10-07, sent Intel the list of other affected laptop makers and organizations. Intel Customer Support replied (by 2026-10-08) that it had passed requests to its team for an advisory naming the affected and first fixed versions, notice to every OEM shipping affected builds to supersede them on Windows Update and in their own tools, work with Microsoft to stop Windows Update offering the broken builds, and an engineering escalation to confirm which driver version fixed the flow label and why the release notes don't say so. Intel promised a status update by 2026-10-13. On 2026-10-13 Intel replied that the installed package is Samsung's OEM build, recommended asking Samsung for its latest OEM version, and said that the advisory, OEM notification and Microsoft coordination requests fall within Samsung's scope as the OEM. In the same reply Intel acknowledged in writing, citing the owner's tests, that its generic 50.26.623.243 (driver 12.10.14.33) does not zero the flow label. The same day, Intel was asked, as the maker of the driver, whether driver 11.5.11.19 in the OEM package is Intel's own unmodified build, which driver version first keeps the flow label, whether Intel has told the laptop makers, and what came of each request it listed on 2026-10-08. A written answer was requested by 2026-10-21. On 2026-10-14 Intel replied that "The information previously shared represents the full extent of what we are currently able to provide", and, on the request for a contact at a higher level, that the owner "will be reached out to as soon as possible". No such contact as of 2026-10-20. On 2026-10-20 a different Intel agent wrote that Intel is "still actively reviewing this matter internally", asked whether Samsung had sent any update, and said the case would be "temporarily closed" without a reply by 2026-10-22. The same day, the owner replied that Samsung had sent nothing since 2026-10-09, reported Microsoft's status, and restated the questions only Intel can answer.</td>
 </tr>
 </tbody>
 </table>
@@ -83,7 +83,7 @@
 <tr>
 <td>Microsoft Support case</td>
 <td>Private</td>
-<td>Opened 2026-08-27 and escalated to OneNote engineering. It never found the cause. No further message from Microsoft Support has been received in the case since the escalation. Full root cause sent 2026-10-02. On 2026-10-07, asked for a case owner and escalation to the Windows Update driver-distribution team and Azure Front Door. No answer as of 2026-10-16.</td>
+<td>Opened 2026-08-27 and escalated to OneNote engineering. It never found the cause. No further message from Microsoft Support has been received in the case since the escalation. Full root cause sent 2026-10-02. On 2026-10-07, asked for a case owner and escalation to the Windows Update driver-distribution team and Azure Front Door. No answer as of 2026-10-20.</td>
 </tr>
 <tr>
 <td>Microsoft Executive Customer Relations</td>
@@ -93,12 +93,12 @@
 <tr>
 <td>Azure Networking engineering</td>
 <td>Private</td>
-<td>Packet-level evidence sent to Azure Front Door engineering leadership on 2026-10-07. On 2026-10-08, Microsoft confirmed the problem: when a client changes the flow label after the SYN, routers that hash on the label send the rest of the connection to a different Azure Front Door server. Microsoft said it has asked its team to work with the Windows team on a fix, and is working on the Azure Front Door side to reduce the impact. No date given. A request for a rough timeline, sent the same day, has had no answer as of 2026-10-16.</td>
+<td>Packet-level evidence sent to Azure Front Door engineering leadership on 2026-10-07. On 2026-10-08, Microsoft confirmed the problem: when a client changes the flow label after the SYN, routers that hash on the label send the rest of the connection to a different Azure Front Door server. Microsoft said it has asked its team to work with the Windows team on a fix, and is working on the Azure Front Door side to reduce the impact. No date given. A request for a rough timeline, sent the same day, has had no answer as of 2026-10-20.</td>
 </tr>
 <tr>
 <td>Microsoft support escalation</td>
 <td>Private</td>
-<td>On 2026-10-08, a senior Microsoft leader passed the support case to his escalation team, which "should be reaching out shortly". No message identifying itself as coming from that team has been received as of 2026-10-16. Executive Customer Relations opened its own case the same day.</td>
+<td>On 2026-10-08, a senior Microsoft leader passed the support case to his escalation team, which "should be reaching out shortly". No message identifying itself as coming from that team has been received as of 2026-10-20. Executive Customer Relations opened its own case the same day.</td>
 </tr>
 </tbody>
 </table>
@@ -120,12 +120,12 @@
 <tr>
 <td>Samsung Care live chat (Laptop Department)</td>
 <td>Private</td>
-<td>Case opened 2026-10-02 and noted for escalation to Galaxy Book software engineering. No follow-up from Samsung. In a second chat on 2026-10-07, Samsung said the first case was "only for documentation" and that it has no software engineering escalation department, and referred the owner to Amazon and a US phone line. A supervisor offered troubleshooting or a repair, then gave the address of Samsung Electronics America's Office of the President. A second case was opened. In another chat on 2026-10-09, a supervisor opened an escalation ticket for the Office of the President under Samsung Electronics America, and said the team would make contact "within 24 to 48 business hours". No contact as of 2026-10-16.</td>
+<td>Case opened 2026-10-02 and noted for escalation to Galaxy Book software engineering. No follow-up from Samsung. In a second chat on 2026-10-07, Samsung said the first case was "only for documentation" and that it has no software engineering escalation department, and referred the owner to Amazon and a US phone line. A supervisor offered troubleshooting or a repair, then gave the address of Samsung Electronics America's Office of the President. A second case was opened. In another chat on 2026-10-09, a supervisor opened an escalation ticket for the Office of the President under Samsung Electronics America, and said the team would make contact "within 24 to 48 business hours". No contact as of 2026-10-20.</td>
 </tr>
 <tr>
 <td>Samsung Electronics America, Office of the President</td>
 <td>Private</td>
-<td>Formal complaint sent 2026-10-07, asking Samsung to put the fixed package on Windows Update and for a written reply from a named contact within 14 days. An escalation for it was opened through live chat on 2026-10-09 (see above). The complaint was forwarded to Samsung Russia, apparently because the owner's email address ends in .ru (the owner does not live in Russia). Samsung Russia replied on 2026-10-09 that it could not help or pass the information to the "Galaxy Book Software development department", and recommended contacting the Samsung office of the country where the laptop was purchased, which is Samsung in the US, where the complaint started; a reply pointing this out went to the Office of the President the same day. No contact or answer as of 2026-10-16.</td>
+<td>Formal complaint sent 2026-10-07, asking Samsung to put the fixed package on Windows Update and for a written reply from a named contact within 14 days. An escalation for it was opened through live chat on 2026-10-09 (see above). The complaint was forwarded to Samsung Russia, apparently because the owner's email address ends in .ru (the owner does not live in Russia). Samsung Russia replied on 2026-10-09 that it could not help or pass the information to the "Galaxy Book Software development department", and recommended contacting the Samsung office of the country where the laptop was purchased, which is Samsung in the US, where the complaint started; a reply pointing this out went to the Office of the President the same day. No contact or answer as of 2026-10-20.</td>
 </tr>
 </tbody>
 </table>
