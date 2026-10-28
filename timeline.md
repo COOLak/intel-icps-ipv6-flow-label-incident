@@ -113,3 +113,19 @@ Intel Customer Support says the OEM package may differ from Intel's generic rele
 - **05:40 UTC, Microsoft Update Catalog:** the three builds reported broken are still listed with the same entry counts: 40.25.926.173 (23), 40.25.725.165 (39) and 4.1025.207.1 (8). The fixed 50.26.623.243 still has a single entry.
 - **05:49 UTC:** a reply asks Intel to keep the case open. It reports that Samsung has sent nothing since its 2026-10-09 escalation ticket. It also gives Microsoft's status: the mechanism is confirmed and work is under way on the Azure Front Door side and with the Windows team, but there is no date, and the Catalog is unchanged. It repeats the questions only Intel can answer: whether driver 11.5.11.19 is Intel's unmodified build, which driver version first keeps the flow label, whether Intel has told the laptop makers, and the status of each action Intel listed on 2026-10-08.
 - No contact from Samsung since 2026-10-09, and no Microsoft date. No Intel advisory has been published.
+
+## 2026-10-21: Intel asks for more time, then for Microsoft's written confirmation
+
+- **01:20 UTC:** Intel Customer Support asks for "some additional time" to review and says it will keep the case open.
+- **22:02 UTC:** the same agent asks for a copy of Microsoft's written confirmation of the mechanism, a Microsoft case number or a link to a Microsoft support thread, and says that once it has them Intel will "proceed with the requested re-escalation". None of the questions sent on 2026-10-13 is answered.
+- Intel's generic ICPS 50.26.917.261 is released with the date 2026-10-21. Its release notes list "Enhanced ICPS UI responsiveness after system resume" and "Improved Wi-Fi connection status synchronization", and do not mention the flow label.
+
+## 2026-10-26: Intel closes the case
+
+- **20:03 UTC:** Intel Customer Support closes the case. It writes that its engineering team "has successfully shared and submitted your feedback to the appropriate OEM teams as well as Microsoft for their awareness and review", and sends all further follow-up to the laptop maker. It does not say which laptop makers were told, or when.
+- None of the questions sent on 2026-10-13 has been answered, and the contact at a higher level promised on 2026-10-14 has not been in touch. No Intel advisory has been published.
+
+## 2026-10-28: Samsung's deadline has passed
+
+- The complaint to Samsung Electronics America's Office of the President asked for a written reply from a named contact by 2026-10-22. Samsung has sent nothing since its escalation ticket of 2026-10-09.
+- **15:22 UTC:** a follow-up to the Office of the President asks again for a written reply from a named person, and for the fixed package on Windows Update with a date.

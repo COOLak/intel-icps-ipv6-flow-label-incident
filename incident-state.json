@@ -1,7 +1,7 @@
 {
     "schema":  "incident-state/v1",
     "incident":  "Intel Connectivity Performance Suite zeroes IPv6 Flow Label mid-connection",
-    "updated":  "2026-10-20",
+    "updated":  "2026-10-28",
     "status":  "root_cause_confirmed_reproduced_fixed_in_intel_generic_build_broken_oem_builds_still_on_windows_update",
     "component":  {
                       "product":  "Intel Connectivity Performance Suite",
@@ -143,7 +143,7 @@
                                       "channel":  "Intel Customer Support case",
                                       "public":  false,
                                       "date":  "2026-10-02",
-                                      "state":  "intel_referred_oem_build_to_samsung_2026-10-13_intel_only_questions_sent_2026-10-13_said_nothing_further_to_provide_2026-10-14_higher_level_contact_promised_not_received"
+                                      "state":  "intel_referred_oem_build_to_samsung_2026-10-13_intel_only_questions_sent_2026-10-13_said_nothing_further_to_provide_2026-10-14_asked_for_microsoft_confirmation_copy_2026-10-21_case_closed_by_intel_2026-10-26_said_findings_shared_with_oem_teams_and_microsoft_questions_unanswered_higher_level_contact_not_received"
                                   }
                               ],
                     "microsoft":  [
@@ -220,13 +220,13 @@
                                         "channel":  "Samsung US live chat (escalation for the Office of the President)",
                                         "public":  false,
                                         "date":  "2026-10-09",
-                                        "state":  "escalation_opened_contact_promised_within_24_to_48_business_hours_none_received_as_of_2026-10-16"
+                                        "state":  "escalation_opened_contact_promised_within_24_to_48_business_hours_none_received_as_of_2026-10-28"
                                     },
                                     {
                                         "channel":  "Samsung Electronics America, Office of the President",
                                         "public":  false,
                                         "date":  "2026-10-07",
-                                        "state":  "formal_complaint_sent_escalation_opened_2026-10-09_no_contact_or_answer_as_of_2026-10-16"
+                                        "state":  "formal_complaint_sent_escalation_opened_2026-10-09_no_contact_or_answer_as_of_2026-10-28_follow_up_sent_2026-10-28"
                                     }
                                 ],
                     "other":  [
@@ -255,7 +255,7 @@
                          "catalog_icps_entries":  1086,
                          "catalog_versions":  47,
                          "catalog_companies":  19,
-                         "reported_broken_builds_rechecked":  "2026-10-16, counts unchanged; fixed build still 1 entry",
+                         "reported_broken_builds_rechecked":  "2026-10-20, counts unchanged; fixed build still 1 entry",
                          "reported_broken_builds":  {
                                                         "4.1025.207.1":  "HP 6, Dynabook 2",
                                                         "40.25.725.165":  "ASUS 30, HP 3, Lenovo 3, VAIO 3",
